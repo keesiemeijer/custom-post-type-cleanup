@@ -9,7 +9,7 @@ Plugins and themes can (without you knowing) use custom post types as a way to s
 
 This plugin provides an easy way to detect and remove posts from post types that are no longer in use. The settings page for this plugin is at wp-admin > Tools > Custom Post Type Cleanup.
 
-**Note**: The proper WordPress delete function `wp_delete_post()` is used instead of running a direct MySQL query to delete the terms. 
+**Note**: The proper WordPress delete function `wp_delete_post()` is used instead of running a direct MySQL query to delete the posts. 
 
 It's recommended you **make a database backup** before deleting posts.
 
@@ -23,7 +23,7 @@ The settings page if there are no posts from unused post types in the database. 
 ![No unused post type posts found](/../screenshots/screenshot-1.png?raw=true)
 
 ### Settings Page
-The settings page if posts where found (after deleting a batch of 100 terms).
+The settings page if posts where found (after deleting a batch of 100 posts).
 ![Settings page for this plugin](/../screenshots/screenshot-2.png?raw=true)
 
 ### Done
