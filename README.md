@@ -13,6 +13,8 @@ This plugin provides an easy way to detect and remove posts from post types that
 
 It's recommended you **make a database backup** before deleting posts.
 
+Check out this [sister plugin](https://github.com/keesiemeijer/custom-taxonomy-cleanup) to delete terms from unused taxonomies.
+
 ## Screenshots
 
 ### No posts found
