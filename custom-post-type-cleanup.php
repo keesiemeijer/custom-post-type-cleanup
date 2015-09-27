@@ -37,7 +37,7 @@ class Custom_Post_Type_Cleanup {
 
 		load_plugin_textdomain( 'custom-post-type-cleanup', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
-		// Hook in *very* late to catch all registered custom post types. ¯\_(ツ)_/¯
+		// Hook in *very* late to catch all registered custom post types.
 		add_action( 'init', array( $this, 'init' ), 9999999 );
 	}
 
@@ -50,6 +50,10 @@ class Custom_Post_Type_Cleanup {
 	 */
 	public function init() {
 
+		if ( !is_admin() ) {
+			return;
+		}
+
 		// Registered post types in global $wp_post_types variable.
 		$this->post_types = array_keys( get_post_types() );
 
@@ -59,7 +63,7 @@ class Custom_Post_Type_Cleanup {
 		// Unregistered (unused) post types.
 		$this->unused_cpts = array();
 
-		// Post type from $_POST request (to delete posts from).
+		// The post type from a $_POST request (to delete posts from).
 		$post_type = $this->get_requested_post_type();
 
 		if ( !empty( $this->db_post_types ) ) {
@@ -71,11 +75,10 @@ class Custom_Post_Type_Cleanup {
 			// Register the non-existent post type.
 			// This way we can use wp_delete_post() to delete the posts.
 
-			// Set hierachical to false as there is no need to re-assign child posts.
 			register_post_type( $post_type,
 				array(
 					'public' => false,
-					'hierarchical' => false,
+					'hierarchical' => true, // Children are re-assigned
 				)
 			);
 		}
@@ -128,48 +131,6 @@ class Custom_Post_Type_Cleanup {
 
 
 	/**
-	 * Returns post types in the database.
-	 *
-	 * @since 1.0
-	 * @return array Array with post types in the database.
-	 */
-	private function db_post_types() {
-		global $wpdb;
-		$query = "SELECT DISTINCT post_type FROM $wpdb->posts";
-		return $wpdb->get_col( $query );
-	}
-
-	private function get_count($post_type){
-		global $wpdb;
-		$query = "SELECT COUNT(p.ID) FROM $wpdb->posts AS p WHERE p.post_type = %s";
-		return $wpdb->get_var( $wpdb->prepare($query, $post_type) );
-	}
-
-
-	/**
-	 * Returns the post type from a $_POST request.
-	 *
-	 * @since 1.0
-	 * @return string Post type to delete posts from or empty string.
-	 */
-	private function get_requested_post_type() {
-
-		if ( 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
-			return '';
-		}
-
-		$request = stripslashes_deep( $_POST );
-
-		// Check it's this plugin's settings form that was submitted
-		if ( !isset( $request['custom_post_type_cleanup'] ) ) {
-			return '';
-		}
-
-		return isset( $request['cptc_post_type'] ) ? $request['cptc_post_type'] : '';
-	}
-
-
-	/**
 	 * Displays the admin settings page for this plugin.
 	 *
 	 * @since 1.0
@@ -214,7 +175,7 @@ class Custom_Post_Type_Cleanup {
 			foreach ( $this->unused_cpts as $unused_type ) {
 				$selected = ( $unused_type === $post_type ) ? " selected='selected'" : '';
 				$value = esc_attr( $unused_type );
-				$count = $this->get_count( $unused_type );
+				$count = $this->get_posts_count( $unused_type );
 				$count = $count ? ' (' . $count . ')' :  '';
 				echo "<option value='{$value}'{$selected}>{$value}{$count}</option>";
 			}
@@ -245,10 +206,33 @@ class Custom_Post_Type_Cleanup {
 
 
 	/**
+	 * Returns the post type from a $_POST request.
+	 *
+	 * @since 1.0
+	 * @return string Post type to delete posts from or empty string.
+	 */
+	private function get_requested_post_type() {
+
+		if ( 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+			return '';
+		}
+
+		$request = stripslashes_deep( $_POST );
+
+		// Check it's this plugin's settings form that was submitted
+		if ( !isset( $request['custom_post_type_cleanup'] ) ) {
+			return '';
+		}
+
+		return isset( $request['cptc_post_type'] ) ? $request['cptc_post_type'] : '';
+	}
+
+
+	/**
 	 * Delete posts from the database.
 	 *
 	 * @since 1.0
-	 * @param $args array $_POST request with post type to delete posts from.
+	 * @param unknown $args array $_POST request with post type to delete posts from.
 	 * @return string Admin notices.
 	 */
 	private function delete_posts( $args ) {
@@ -262,18 +246,18 @@ class Custom_Post_Type_Cleanup {
 			return $msg;
 		}
 
-		$query = "SELECT p.ID FROM $wpdb->posts AS p WHERE p.post_type IN (%s)";
-		$db_post_types = $wpdb->get_col( $wpdb->prepare( $query . " LIMIT 100", $post_type ) );
+		// get 100 post ids for this post type
+		$db_post_ids = $this->get_post_ids( $post_type, 100 );
 
-		if ( empty( $db_post_types ) ) {
+		if ( empty( $db_post_ids ) ) {
 			/* translators: %s: post type name */
 			$msg .= '<div class="notice"><p>' . sprintf( __( 'Notice: No posts found for the post type: %s', 'custom-post-type-cleanup' ), $post_type ) . '</p></div>';
 			return $msg;
 		}
 
 		$deleted = 0;
-		foreach ( $db_post_types as $post ) {
-			$del = wp_delete_post( $post );
+		foreach ( $db_post_ids as $post_id ) {
+			$del = wp_delete_post( $post_id );
 			if ( false !== $del ) {
 				++$deleted;
 			}
@@ -285,11 +269,11 @@ class Custom_Post_Type_Cleanup {
 		}
 
 		// Check if there more posts from this post type to delete.
-		$db_post_types = $wpdb->get_col( $wpdb->prepare( $query, $post_type ) );
+		$db_post_ids = $this->get_post_ids( $post_type );
 
-		if ( !empty( $db_post_types ) ) {
+		if ( !empty( $db_post_ids ) ) {
 			/* translators: 1: posts count, 2: post type name  */
-			$msg .= '<div class="notice"><p>' . sprintf( __( 'Still %1$d posts left in the database from the post type: %2$s ', 'custom-post-type-cleanup' ), count( $db_post_types ), $post_type ) . '</p></div>';
+			$msg .= '<div class="notice"><p>' . sprintf( __( 'Still %1$d posts left in the database from the post type: %2$s ', 'custom-post-type-cleanup' ), count( $db_post_ids ), $post_type ) . '</p></div>';
 		} else {
 			// No more posts from this post type in the database.
 
@@ -303,6 +287,53 @@ class Custom_Post_Type_Cleanup {
 
 		return $msg;
 	}
+
+
+	/**
+	 * Returns post types in the database.
+	 *
+	 * @since 1.0
+	 * @return array Array with post types in the database.
+	 */
+	private function db_post_types() {
+		global $wpdb;
+		$query = "SELECT DISTINCT post_type FROM $wpdb->posts";
+		return $wpdb->get_col( $query );
+	}
+
+
+	/**
+	 * Returns post type posts count for a post type
+	 * todo: check if wp_count_posts can be used for this
+	 *
+	 * @since 1.0
+	 * @param string  $post_type Post type.
+	 * @return integer Post count for a post type.
+	 */
+	private function get_posts_count( $post_type ) {
+		global $wpdb;
+		$query = "SELECT COUNT(p.ID) FROM $wpdb->posts AS p WHERE p.post_type = %s";
+		return $wpdb->get_var( $wpdb->prepare( $query, $post_type ) );
+	}
+
+
+	/**
+	 * Returns post ids from a post type.
+	 *
+	 * @since 1.0
+	 * @param string  $post_type Post type
+	 * @param integer $limit     Limit how many ids are returned.
+	 * @return array Array with post ids
+	 */
+	private function get_post_ids( $post_type, $limit = 0 ) {
+		global $wpdb;
+
+		$limit = $limit ? " LIMIT {$limit}" : '';
+		$query = "SELECT p.ID FROM $wpdb->posts AS p WHERE p.post_type IN (%s){$limit}";
+
+		return $wpdb->get_col( $wpdb->prepare( $query, $post_type ) );
+	}
+
 }
 
 $custom_post_type_cleanup = new Custom_Post_Type_Cleanup();
