@@ -11,11 +11,9 @@ There are a lot of plugins that clean your database (by removing revisions, draf
 
 This plugin provides an easy way to detect and remove posts from post types that are no longer in use. The settings page for this plugin is at wp-admin > Tools > Custom Post Type Cleanup.
 
-**Note**: The proper WordPress delete function `wp_delete_post()` is used instead of running a direct MySQL query to delete the posts. 
+**Note**: The proper WordPress delete function `wp_delete_post()` is used instead of running a direct MySQL query to delete the posts. This way all associated post data (comments, post meta etc.) are also deleted from the database. The only exception being term relationships from taxonomies that are also not in use anymore. Delete the terms from those taxonomies as well with this [sister plugin](https://github.com/keesiemeijer/custom-taxonomy-cleanup)
 
 It's recommended you **make a database backup** before deleting posts.
-
-Check out this [sister plugin](https://github.com/keesiemeijer/custom-taxonomy-cleanup) to delete terms from unused taxonomies.
 
 ## Screenshots
 
