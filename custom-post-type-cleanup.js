@@ -22,13 +22,17 @@
 				var storage = localStorage.getItem( "cptc_run_delete_dialog" );
 
 				if ( post_type.length && ( post_type !== storage ) ) {
-
-					// Remove confirm dialog after first delete terms dialog.
-					localStorage.setItem( "cptc_run_delete_dialog", post_type );
-
+									
 					var confirm_msg = cptc_plugin.confirm.replace( /%s/g, post_type );
+					var reply       = confirm( confirm_msg );
 
-					return confirm( confirm_msg );
+					if ( reply == true ) {
+						localStorage.setItem( "cptc_run_delete_dialog", post_type );
+						return confirm;
+					} else {
+						localStorage.removeItem( "cptc_run_delete_dialog" );
+						return false;
+					}
 				}
 			}
 
