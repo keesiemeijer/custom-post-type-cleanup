@@ -1,7 +1,8 @@
 # Custom Post Type Cleanup
 
-version:         1.0  
-Tested up to WP: 4.3  
+Version: 1.0.0  
+Requires at least: 4.0  
+Tested up to: 4.8  
 
 Custom post type posts are left in the database if a post type is no longer registered (in use).
 

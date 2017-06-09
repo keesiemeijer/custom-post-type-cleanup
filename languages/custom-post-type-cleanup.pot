@@ -1,105 +1,105 @@
-# Copyright (C) 2015 keesiemijer
+# Copyright (C) 2017 keesiemijer
 # This file is distributed under the GPL v2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Custom Post Type Cleanup 1.0\n"
+"Project-Id-Version: Custom Post Type Cleanup 1.0.0\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/custom-post-type-cleanup\n"
-"POT-Creation-Date: 2015-09-26 16:27:31+00:00\n"
+"POT-Creation-Date: 2017-06-09 12:57:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: grunt-wp-i18n 0.5.3\n"
-"X-Poedit-KeywordsList: "
-"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
-"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Country: United States\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n1.0.0\n"
 
 #. Plugin Name of the plugin/theme
 msgid "Custom Post Type Cleanup"
 msgstr ""
 
-#: custom-post-type-cleanup.php:120
+#: custom-post-type-cleanup.php:123
 #. translators: %s: post type name
 msgid "You are about to permanently delete posts from the post_type: %s."
 msgstr ""
 
-#: custom-post-type-cleanup.php:124
+#: custom-post-type-cleanup.php:127
 msgid "'Cancel' to stop, 'OK' to delete."
 msgstr ""
 
-#: custom-post-type-cleanup.php:180
+#: custom-post-type-cleanup.php:141
 msgid ""
 "Delete posts from custom post types that are currently not registered (no "
 "longer in use)."
 msgstr ""
 
-#: custom-post-type-cleanup.php:200
+#: custom-post-type-cleanup.php:161
 msgid "Posts from unused post type detected!"
 msgid_plural "Posts from unused post types detected!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: custom-post-type-cleanup.php:203
+#: custom-post-type-cleanup.php:164
 msgid "Posts are deleted in batches of 100 posts."
 msgstr ""
 
-#: custom-post-type-cleanup.php:204
+#: custom-post-type-cleanup.php:165
 msgid ""
 "It's recommended you <strong style='color:red;'>make a database "
 "backup</strong> before proceeding."
 msgstr ""
 
-#: custom-post-type-cleanup.php:210
+#: custom-post-type-cleanup.php:171
 msgid "Post type"
 msgstr ""
 
-#: custom-post-type-cleanup.php:223
+#: custom-post-type-cleanup.php:184
 msgid "The post type you want to delete posts from."
 msgstr ""
 
-#: custom-post-type-cleanup.php:225
+#: custom-post-type-cleanup.php:186
 msgid "Delete Posts!"
 msgstr ""
 
-#: custom-post-type-cleanup.php:236
+#: custom-post-type-cleanup.php:197
 msgid "No unused custom post types found!"
 msgstr ""
 
-#: custom-post-type-cleanup.php:237
+#: custom-post-type-cleanup.php:198
 msgid "De-activate this plugin"
 msgstr ""
 
-#: custom-post-type-cleanup.php:261
+#: custom-post-type-cleanup.php:245
 msgid "Error: invalid post type"
 msgstr ""
 
-#: custom-post-type-cleanup.php:270
+#: custom-post-type-cleanup.php:254
 #. translators: %s: post type name
 msgid "Notice: No posts found for the post type: %s"
 msgstr ""
 
-#: custom-post-type-cleanup.php:284
+#: custom-post-type-cleanup.php:268
 #. translators: 1: deleted posts count, 2: post type name
 msgid "Deleted %1$d posts from the post type: %2$s "
 msgstr ""
 
-#: custom-post-type-cleanup.php:292
+#: custom-post-type-cleanup.php:276
 #. translators: 1: posts count, 2: post type name
 msgid "Still %1$d posts left in the database from the post type: %2$s "
 msgstr ""
 
-#: custom-post-type-cleanup.php:300
+#: custom-post-type-cleanup.php:284
 #. translators: %s: post type name
 msgid "No more posts left in the database from the post type: %s "
 msgstr ""
