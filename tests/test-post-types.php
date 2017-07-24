@@ -1,0 +1,55 @@
+<?php
+/**
+ * Test case for post types.
+ */
+class CPTC_Test_Post_Types extends CPTC_Post_Type_Cleanup_UnitTestCase {
+
+	public $cleanup;
+
+	/**
+	 * Set up.
+	 */
+	function setUp() {
+		$this->cleanup = new CPTC_Post_Type_Cleanup();
+		add_filter( 'custom_post_type_cleanup_batch_size', array( $this, 'set_batch_size' ) );
+	}
+
+	/**
+	 * Test default post types found in database.
+	 */
+	function test_database_post_types_default() {
+		$this->create_posts( 'post' );
+		$post_types = $this->cleanup->db_post_types();
+		$this->assertEquals( array( 'post' ), $post_types );
+	}
+
+	/**
+	 * Test all database post types
+	 */
+	function test_database_post_types() {
+		$this->create_not_registered_post_type_posts();
+		$post_types = $this->cleanup->db_post_types();
+		$this->assertEquals( array( 'cpt', 'post' ), $post_types );
+	}
+
+	/**
+	 * Test if an unused post type is found.
+	 *
+	 * @depends test_database_post_types
+	 */
+	function test_unused_post_type_found() {
+		$this->create_not_registered_post_type_posts();
+		$this->assertEquals( array( 'cpt' ), $this->cleanup->get_unused_post_types() );
+	}
+
+	/**
+	 * Test if an unused post type is re-registered.
+	 *
+	 * @depends test_unused_post_type_found
+	 */
+	function test_unused_post_type_is_registered() {
+		$this->create_not_registered_post_type_posts();
+		$this->cleanup->register_post_type();
+		$this->assertTrue( post_type_exists( 'cpt' ) );
+	}
+}
