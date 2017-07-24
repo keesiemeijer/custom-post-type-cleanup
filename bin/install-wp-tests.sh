@@ -114,7 +114,7 @@ install_db() {
 		elif ! [ -z $DB_SOCK_OR_PORT ] ; then
 			EXTRA=" --socket=$DB_SOCK_OR_PORT"
 		elif ! [ -z $DB_HOSTNAME ] ; then
-			EXTRA=" --host=$DB_HOSTNAME --protocol=tcp"
+			EXTRA=" --host=$DB_HOSTNAME"
 		fi
 	fi
 
