@@ -2,6 +2,10 @@ language: php
 
 sudo: false
 
+dist: trusty
+
+group: edge
+
 notifications:
   email:
     on_success: never
@@ -26,8 +30,6 @@ matrix:
     - php: 5.5
       env: WP_VERSION=latest WP_MULTISITE=0
     - php: 5.4
-      env: WP_VERSION=latest WP_MULTISITE=0
-    - php: 5.3
       env: WP_VERSION=latest WP_MULTISITE=0
 
 before_script:
