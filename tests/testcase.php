@@ -56,9 +56,6 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 	function create_not_registered_post_type_posts( $post_type = 'cpt', $posts_per_page = 5, $delete = true ) {
 		$posts = $this->create_posts( $post_type, $posts_per_page, $delete );
 		unregister_post_type( $post_type );
-		$_SERVER['REQUEST_METHOD'] = 'POST';
-		$_POST['custom_post_type_cleanup'] = true;
-		$_POST['cptc_post_type'] = $post_type;
 	}
 
 	/**
@@ -72,7 +69,16 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Sets the batch size to 5.
+	 * Mocks the form field values and request globals.
+	 *
+	 * @param string $post_type Post type. Default 'cpt'.
+	 */
+	function mock_admin_page_globals( $post_type = 'cpt' ) {
+		$_REQUEST['security'] = wp_create_nonce( 'custom_post_type_cleanup_nonce' );
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_POST['custom_post_type_cleanup'] = true;
+		$_POST['cptc_post_type'] = $post_type;
+	}
 	 *
 	 * @param int $size Batch size.
 	 * @return  int 5.

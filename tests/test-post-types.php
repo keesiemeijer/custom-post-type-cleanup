@@ -49,6 +49,7 @@ class CPTC_Test_Post_Types extends CPTC_Post_Type_Cleanup_UnitTestCase {
 	 */
 	function test_unused_post_type_is_registered() {
 		$this->create_not_registered_post_type_posts();
+		$this->mock_admin_page_globals( 'cpt' );
 		$this->cleanup->register_post_type();
 		$this->assertTrue( post_type_exists( 'cpt' ) );
 	}
