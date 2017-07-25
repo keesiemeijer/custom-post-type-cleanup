@@ -6,6 +6,8 @@
  */
 class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 
+	protected $cleanup;
+
 	/**
 	 * Creates posts.
 	 *
@@ -56,6 +58,7 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 	function create_not_registered_post_type_posts( $post_type = 'cpt', $posts_per_page = 5, $delete = true ) {
 		$posts = $this->create_posts( $post_type, $posts_per_page, $delete );
 		unregister_post_type( $post_type );
+		return $posts;
 	}
 
 	/**
@@ -79,11 +82,27 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 		$_POST['custom_post_type_cleanup'] = true;
 		$_POST['cptc_post_type'] = $post_type;
 	}
+
+	/**
+	 * Returns the output from the plugin admin page
 	 *
-	 * @param int $size Batch size.
-	 * @return  int 5.
+	 * @return string Plugin admin page HTML.
 	 */
-	function set_batch_size( $size ) {
-		return 5;
+	function get_admin_page() {
+		ob_start();
+		$this->cleanup->admin_page();
+		$admin_page = ob_get_clean();
+		return $admin_page;
+	}
+
+	/**
+	 * Sets the batch size
+	 *
+	 * @param integer $size Number of posts to delete in one batch.
+	 */
+	function set_batch_size( $size = 5 ) {
+		add_filter( 'custom_post_type_cleanup_batch_size', function( $val ) use ( $size ) {
+				return $size;
+			} );
 	}
 }
