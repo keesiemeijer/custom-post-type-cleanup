@@ -17,7 +17,7 @@
 	</p>
 	<hr>
 	<form method="post" action="">
-		<?php wp_nonce_field( 'custom_post_type_cleanup_nonce' ); ?>
+		<?php wp_nonce_field( 'custom_post_type_cleanup_nonce', 'security' ); ?>
 		<table class='form-table'>
 			<tr>
 				<th scope='row'>

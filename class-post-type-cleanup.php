@@ -130,7 +130,7 @@ class CPTC_Post_Type_Cleanup {
 		$plugin_link = '<a href="https://github.com/keesiemeijer/custom-post-type-cleanup">' . $plugin_text . '</a>';
 
 		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-			check_admin_referer( 'custom_post_type_cleanup_nonce' );
+			check_admin_referer( 'custom_post_type_cleanup_nonce', 'security' );
 
 			$post_type = $this->get_requested_post_type();
 			$notice    = $this->delete_posts( stripslashes_deep( $_POST ) );
