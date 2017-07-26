@@ -190,7 +190,7 @@ class CPTC_Post_Type_Cleanup {
 		$msg       = '';
 		$post_type = isset( $args['cptc_post_type'] ) ? $args['cptc_post_type'] : '';
 
-		if ( empty( $post_type ) ) {
+		if ( empty( $post_type ) || ! post_type_exists( $post_type ) ) {
 			$msg = __( 'Error: invalid post type', 'custom-post-type-cleanup' );
 			return '<div class="error"><p>' . $msg . '</p></div>';
 		}

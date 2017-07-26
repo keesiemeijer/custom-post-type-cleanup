@@ -61,6 +61,7 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 			// No posts found.
 			array( array( 'cpt' => 5 ), 5, 'There are no unused custom post type posts found' ),
 			array( array( 'cpt' => 5, 'cpt2' => 2 ), 5, 'No more posts left in the database from the post type: cpt' ),
+			array( array(), 5, 'Notice: No posts found for the post type: cpt' ),
 		);
 	}
 
@@ -81,8 +82,8 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 		}
 
 		$this->set_batch_size( $batch );
-		$this->cleanup->register_post_type();
 		$this->mock_admin_page_globals();
+		$this->cleanup->register_post_type();
 
 		// Deletes the first post type posts to the post type count in the provider.
 		$admin_page = $this->get_admin_page();
