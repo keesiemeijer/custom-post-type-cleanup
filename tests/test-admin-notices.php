@@ -101,6 +101,17 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 			$this->assertContains( $notices, $admin_page );
 		}
 	}
+
+	/**
+	 * Test invalid post type in $_POST request. (should never happen)
+	 */
+	function test_batch_error_invalid_post_type() {
+		$this->mock_admin_page_globals( 'invalid_post_type' );
+		$this->cleanup->register_post_type();
+		$admin_page = $this->get_admin_page();
+		$this->assertContains( 'Error: invalid post type', $admin_page );
+	}
+
 	/**
 	 * Test admin page without submitting form and no unused post types found.
 	 */
