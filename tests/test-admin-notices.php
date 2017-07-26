@@ -101,4 +101,13 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 			$this->assertContains( $notices, $admin_page );
 		}
 	}
+	/**
+	 * Test admin page without submitting form and no unused post types found.
+	 */
+	function test_admin_page_without_submitting_form_and_no_unused_post_types() {
+		$_SERVER['REQUEST_METHOD'] = '';
+		$admin_page = $this->get_admin_page();
+		$this->assertNotContains( 'Error:', $admin_page );
+		$this->assertNotContains( 'Notice:', $admin_page );
+	}
 }
