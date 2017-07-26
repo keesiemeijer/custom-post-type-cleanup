@@ -13,9 +13,11 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 		$user          = wp_set_current_user( $user_id );
 		$this->set_batch_size( 5 );
 		_delete_all_posts();
-
 	}
 
+	/**
+	 * Test data provider
+	 */
 	public function batch_provider() {
 		return array(
 			// Single form, 1 post type.

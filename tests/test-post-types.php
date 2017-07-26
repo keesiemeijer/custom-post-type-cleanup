@@ -4,14 +4,12 @@
  */
 class CPTC_Test_Post_Types extends CPTC_Post_Type_Cleanup_UnitTestCase {
 
-	public $cleanup;
-
 	/**
 	 * Set up.
 	 */
 	function setUp() {
 		$this->cleanup = new CPTC_Post_Type_Cleanup();
-		add_filter( 'custom_post_type_cleanup_batch_size', array( $this, 'set_batch_size' ) );
+		$this->set_batch_size( 5 );
 	}
 
 	/**
