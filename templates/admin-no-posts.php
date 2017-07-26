@@ -1,5 +1,6 @@
 <div class="wrap rpbt_cache">
 	<h1><?php _e( 'Custom Post Type Cleanup', 'custom-post-type-cleanup' ); ?></h1>
+	<?php echo $notice; ?>
 	<div class="notice">
 		<p>
 			<?php _e( 'There are no unused custom post type posts found.', 'custom-post-type-cleanup' ); ?>

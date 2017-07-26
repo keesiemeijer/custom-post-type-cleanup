@@ -21,12 +21,12 @@ It's recommended you **make a database backup** before deleting posts.
 ### No posts found
 The settings page if there are no posts from unused post types in the database. De-activate or delete the plugin and use it again later.
 
-![No unused post type posts found](/../screenshots/screenshot-1.png?raw=true)
+![No unused post type posts found](https://user-images.githubusercontent.com/1436618/28619330-24c2ca86-7208-11e7-8964-a19ffe04f826.png)
 
 ### Settings Page
 The settings page if posts where found (after deleting a batch of 100 posts).
-![Settings page for this plugin](/../screenshots/screenshot-2.png?raw=true)
+![Settings page for this plugin](https://user-images.githubusercontent.com/1436618/28619332-24c712b2-7208-11e7-80c9-933130c542df.png)
 
 ### Done
 The settings page if all posts were deleted. De-activate or delete the plugin and use it again later.
-![Settings page for this plugin](/../screenshots/screenshot-3.png?raw=true)
+![Settings page for this plugin](https://user-images.githubusercontent.com/1436618/28619331-24c5ea7c-7208-11e7-8304-fcc90035de00.png)
