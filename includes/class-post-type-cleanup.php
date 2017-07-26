@@ -263,6 +263,7 @@ class CPTC_Post_Type_Cleanup {
 	/**
 	 * Get post types no longer in use.
 	 *
+	 * @since  1.1.0
 	 * @return array Array with unused post type names.
 	 */
 	public function get_unused_post_types() {
