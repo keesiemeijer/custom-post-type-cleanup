@@ -36,6 +36,44 @@ module.exports = function( grunt ) {
 			}
 		},
 
+		// Clean up build directory
+		clean: {
+			main: [ 'build/<%= pkg.name %>' ]
+		},
+
+		// Copy the theme into the build directory
+		copy: {
+			main: {
+				src: [
+					'**',
+					'!node_modules/**',
+					'!bin/**',
+					'!tests/**',
+					'!build/**',
+					'!vendor/**',
+					'!.git/**',
+					'!Gruntfile.js',
+					'!package.json',
+					'!.gitignore',
+					'!.gitmodules',
+					'!.gitattributes',
+					'!.editorconfig',
+					'!.tx/**',
+					'!**/Gruntfile.js',
+					'!**/package.json',
+					'!**/phpunit.xml',
+					'!**/phpunit.xml.dist',
+					'!**/README.md',
+					'!**/readme.md',
+					'!**/CHANGELOG.md',
+					'!**/CONTRIBUTING.md',
+					'!**/travis.yml',
+					'!**/*~'
+				],
+				dest: 'build/<%= pkg.name %>/'
+			}
+		},
+
 		version: {
 			readmetxt: {
 				options: {
@@ -74,7 +112,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'i18n', [ 'addtextdomain', 'makepot' ] );
 
 	// Creates build
-	grunt.registerTask( 'build', [ 'version', 'makepot' ] );
+	grunt.registerTask( 'build', [ 'clean', 'version', 'makepot', 'copy' ] );
 
 	grunt.util.linefeed = '\n';
 
