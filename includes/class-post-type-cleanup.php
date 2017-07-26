@@ -16,7 +16,7 @@ class CPTC_Post_Type_Cleanup {
 	 * @since  1.1.0
 	 * @var int
 	 */
-	private $batch_size;
+	private $batch_size = 100;
 
 	/**
 	 * Initialize plugin
@@ -53,7 +53,7 @@ class CPTC_Post_Type_Cleanup {
 		 *
 		 * @param int $batch_size Batch size. Default 100.
 		 */
-		$batch_size = apply_filters( 'custom_post_type_cleanup_batch_size', 100, $post_type );
+		$batch_size = apply_filters( 'custom_post_type_cleanup_batch_size', $this->batch_size, $post_type );
 		$this->batch_size = absint( $batch_size );
 
 		if ( ! empty( $this->unused_cpts ) && ! empty( $post_type ) ) {
@@ -307,15 +307,18 @@ class CPTC_Post_Type_Cleanup {
 	 *
 	 * @since 1.0.0
 	 * @param string  $post_type Post type.
-	 * @param integer $limit     Limit how many ids are returned.
-	 * @return array Array with post ids
+	 * @param integer $limit     Limit how many ids are returned. Default 100.
+	 * @return array Array with post ids.
 	 */
-	public function get_post_ids( $post_type, $limit = 0 ) {
+	public function get_post_ids( $post_type, $limit = 100 ) {
 		global $wpdb;
 
-		$limit = $limit ? " LIMIT {$limit}" : '';
-		$query = "SELECT p.ID FROM $wpdb->posts AS p WHERE p.post_type IN (%s){$limit}";
+		if ( ! absint( $limit ) ) {
+			return array();
+		}
 
-		return $wpdb->get_col( $wpdb->prepare( $query, $post_type ) );
+		$query = "SELECT p.ID FROM $wpdb->posts AS p WHERE p.post_type IN (%s) LIMIT %d";
+
+		return $wpdb->get_col( $wpdb->prepare( $query, $post_type, absint( $limit ) ) );
 	}
 }
