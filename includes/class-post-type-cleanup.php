@@ -28,43 +28,8 @@ class CPTC_Post_Type_Cleanup {
 			return;
 		}
 
-		// Hook in *very* late to catch all registered custom post types.
-		add_action( 'init', array( $this, 'register_post_type' ), 9999999 );
-
 		// Add the admin page for this plugin.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-	}
-
-	/**
-	 * Re-registers an unused post type if needed.
-	 *
-	 * @since  1.1.0
-	 */
-	public function register_post_type() {
-
-		// Unregistered (unused) post types.
-		$this->unused_cpts = $this->get_unused_post_types();
-
-		// The post type from a $_POST request (to delete posts from).
-		$post_type = $this->get_requested_post_type();
-
-		/**
-		 * Filter the batch size.
-		 *
-		 * @param int $batch_size Batch size. Default 100.
-		 */
-		$batch_size = apply_filters( 'custom_post_type_cleanup_batch_size', $this->batch_size, $post_type );
-		$this->batch_size = absint( $batch_size );
-
-		if ( ! empty( $this->unused_cpts ) && ! empty( $post_type ) ) {
-			// Register the non-existent post type.
-			register_post_type( $post_type,
-				array(
-					'public' => false,
-					'hierarchical' => true, // Children are re-assigned.
-				)
-			);
-		}
 	}
 
 	/**
@@ -82,6 +47,7 @@ class CPTC_Post_Type_Cleanup {
 			array( $this, 'admin_page' )
 		);
 
+		add_action( 'load-' . $page_hook, array( $this, 'register_post_type' ) );
 		add_action( 'admin_print_scripts-' . $page_hook, array( $this, 'enqueue_script' ) );
 	}
 
@@ -131,7 +97,6 @@ class CPTC_Post_Type_Cleanup {
 
 		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'custom_post_type_cleanup_nonce', 'security' );
-
 			$post_type = $this->get_requested_post_type();
 			$notice    = $this->delete_posts( stripslashes_deep( $_POST ) );
 		}
@@ -156,13 +121,44 @@ class CPTC_Post_Type_Cleanup {
 	}
 
 	/**
+	 * Re-registers an unused post type if needed.
+	 *
+	 * @since  1.1.0
+	 */
+	public function register_post_type() {
+
+		// Unregistered (unused) post types.
+		$this->unused_cpts = $this->get_unused_post_types();
+
+		// The post type from a $_POST request (to delete posts from).
+		$post_type = $this->get_requested_post_type();
+
+		/**
+		 * Filter the batch size.
+		 *
+		 * @param int $batch_size Batch size. Default 100.
+		 */
+		$batch_size = apply_filters( 'custom_post_type_cleanup_batch_size', $this->batch_size, $post_type );
+		$this->batch_size = absint( $batch_size );
+
+		if ( ! empty( $this->unused_cpts ) && ! empty( $post_type ) ) {
+			// Register the non-existent post type.
+			register_post_type( $post_type,
+				array(
+					'public' => false,
+					'hierarchical' => true, // Children are re-assigned.
+				)
+			);
+		}
+	}
+
+	/**
 	 * Returns the post type from a $_POST request.
 	 *
 	 * @since 1.0.0
 	 * @return string Post type to delete posts from or empty string.
 	 */
 	private function get_requested_post_type() {
-
 		if ( 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
 			return '';
 		}
