@@ -30,3 +30,23 @@ The settings page if posts where found (after deleting a batch of 100 posts).
 ### Done
 The settings page if all posts were deleted. De-activate or delete the plugin and use it again later.
 ![Settings page for this plugin](https://user-images.githubusercontent.com/1436618/28619331-24c5ea7c-7208-11e7-8304-fcc90035de00.png)
+
+## Developers
+This is the development repository for the Custom Post Type Cleanup plugin.
+
+### Creating a new build
+To compile the plugin without all the development files use the following commands:
+```bash
+# Go to the master branch
+git checkout master
+
+# Install Grunt tasks
+npm install
+
+# Build the production plugin
+grunt build
+```
+The plugin will be compiled in the `build` directory.
+
+### Bugs
+If you find an issue, let us know [here](https://github.com/keesiemeijer/custom-post-type-cleanup/issues?state=open)!
