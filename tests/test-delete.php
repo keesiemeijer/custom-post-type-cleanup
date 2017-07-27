@@ -8,9 +8,7 @@ class CPTC_Test_Delete extends CPTC_Post_Type_Cleanup_UnitTestCase {
 	 * Set up.
 	 */
 	function setUp() {
-		$this->cleanup    = new CPTC_Post_Type_Cleanup();
-		$user_id          = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		$user             = wp_set_current_user( $user_id );
+		parent::setUp();
 		$this->set_batch_size( 5 );
 	}
 

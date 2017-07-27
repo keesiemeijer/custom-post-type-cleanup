@@ -4,13 +4,15 @@
  */
 class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 
+	protected $cleanup;
+
+
+
 	/**
 	 * Set up.
 	 */
 	function setUp() {
-		$this->cleanup = new CPTC_Post_Type_Cleanup();
-		$user_id       = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		$user          = wp_set_current_user( $user_id );
+		parent::setUp();
 		$this->set_batch_size( 5 );
 		_delete_all_posts();
 	}

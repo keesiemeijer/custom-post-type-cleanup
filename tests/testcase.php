@@ -9,6 +9,15 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 	protected $cleanup;
 
 	/**
+	 * Set up.
+	 */
+	function setUp() {
+		$this->cleanup = new CPTC_Post_Type_Cleanup();
+		$user_id       = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$user          = wp_set_current_user( $user_id );
+	}
+
+	/**
 	 * Creates posts.
 	 *
 	 * @param string  $post_type      Post type. Default 'cpt'.
@@ -102,7 +111,7 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 	 */
 	function set_batch_size( $size = 5 ) {
 		add_filter( 'custom_post_type_cleanup_batch_size', function( $val ) use ( $size ) {
-				return $size;
-			} );
+			return $size;
+		} );
 	}
 }

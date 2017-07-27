@@ -8,7 +8,7 @@ class CPTC_Test_Post_Types extends CPTC_Post_Type_Cleanup_UnitTestCase {
 	 * Set up.
 	 */
 	function setUp() {
-		$this->cleanup = new CPTC_Post_Type_Cleanup();
+		parent::setUp();
 		$this->set_batch_size( 5 );
 	}
 
