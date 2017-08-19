@@ -4,6 +4,8 @@ Version: 1.1.0
 Requires at least: 4.0  
 Tested up to: 4.8  
 
+This is the development repository for the WordPress plugin [Custom Post Type Cleanup](https://wordpress.org/plugins/custom-post-type-cleanup/)
+
 Custom post type posts are left in the database if a post type is no longer registered (in use).
 
 Plugins and themes can (without you knowing) use custom post types as a way to store data. These posts stay in the database forever if they're not cleaned up by the plugin/theme itself upon deletion.
