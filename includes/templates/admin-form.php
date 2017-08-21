@@ -22,7 +22,7 @@
 			<tr>
 				<th scope='row'>
 					<label for="cptc_post_type">
-						<?php _ex( 'Post type', 'Post type form label text', 'custom-post-type-cleanup' ); ?>
+						<?php _ex( 'Post type', 'Form label text for post type', 'custom-post-type-cleanup' ); ?>
 					</label>
 				</th>
 				<td>
