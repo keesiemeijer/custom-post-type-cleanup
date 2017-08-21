@@ -6,6 +6,8 @@ Tested up to: 4.8
 
 This is the development repository for the WordPress plugin [Custom Post Type Cleanup](https://wordpress.org/plugins/custom-post-type-cleanup/)
 
+---
+
 Custom post type posts are left in the database if a post type is no longer registered (in use).
 
 Plugins and themes can (without you knowing) use custom post types as a way to store data. These posts stay in the database forever if they're not cleaned up by the plugin/theme itself upon deletion.
@@ -33,8 +35,38 @@ The settings page if posts where found (after deleting a batch of 100 posts).
 The settings page if all posts were deleted. De-activate or delete the plugin and use it again later.
 ![Settings page for this plugin](https://user-images.githubusercontent.com/1436618/28619331-24c5ea7c-7208-11e7-8304-fcc90035de00.png)
 
+## Contributing
+
+Anyone is welcome to contribute to Custom Post Type Cleanup plugin.
+### Issues
+
+If you find an issue, let us know [here](https://github.com/keesiemeijer/custom-post-type-cleanup/issues?state=open)!
+Or open up a forum topic in the [WordPress forums](https://wordpress.org/support/plugin/custom-post-type-cleanup)
+
+### Help Tranlate this plugin
+
+If you want to contribute translations so other people can use them as well, you can do so by visiting the [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/custom-post-type-cleanup) page for this plugin. You can read about how translating works in the [WordPress Translator's Handbook](https://make.wordpress.org/polyglots/handbook/tools/glotpress-translate-wordpress-org/).
+
 ## Developers
-This is the development repository for the Custom Post Type Cleanup plugin.
+
+The `master` branch is where you'll find the most recent, stable release.
+The `develop` branch is the current working branch for development. Both branches are required to pass all unit tests. Any pull requests are first merged with the `develop` branch before being merged into the `master` branch. See [Pull Requests](#pull-requests)
+
+### Pull Requests
+When starting work on a new feature, branch off from the `develop` branch.
+```bash
+# clone the repository
+git clone https://github.com/keesiemeijer/custom-post-type-cleanup.git
+
+# cd into the custom-post-type-cleanup directory
+cd custom-post-type-cleanup
+
+# switch to the develop branch
+git checkout develop
+
+# create new branch newfeature and switch to it
+git checkout -b newfeature develop
+```
 
 ### Creating a new build
 To compile the plugin without all the development files use the following commands:
@@ -49,6 +81,3 @@ npm install
 grunt build
 ```
 The plugin will be compiled in the `build` directory.
-
-### Bugs
-If you find an issue, let us know [here](https://github.com/keesiemeijer/custom-post-type-cleanup/issues?state=open)!
