@@ -37,22 +37,20 @@ The settings page if all posts were deleted. De-activate or delete the plugin an
 
 ## Contributing
 
-Anyone is welcome to contribute to Custom Post Type Cleanup plugin.
-### Issues
-
-If you find an issue, let us know [here](https://github.com/keesiemeijer/custom-post-type-cleanup/issues?state=open)!
-Or open up a forum topic in the [WordPress forums](https://wordpress.org/support/plugin/custom-post-type-cleanup)
+Anyone is welcome to contribute to Custom Post Type Cleanup plugin. If you find an issue, let us know [here](https://github.com/keesiemeijer/custom-post-type-cleanup/issues?state=open) or open up a forum topic in the [WordPress forums](https://wordpress.org/support/plugin/custom-post-type-cleanup)
 
 ### Help Tranlate this plugin
 
 If you want to contribute translations so other people can use them as well, you can do so by visiting the [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/custom-post-type-cleanup) page for this plugin. You can read about how translating works in the [WordPress Translator's Handbook](https://make.wordpress.org/polyglots/handbook/tools/glotpress-translate-wordpress-org/).
 
-## Developers
+Let me know in the [WordPress forums](https://wordpress.org/support/plugin/custom-post-type-cleanup) if you want to become a [Translation Editor](https://make.wordpress.org/polyglots/handbook/rosetta/theme-plugin-directories/#requesting-new-translation-editors) for this plugin.
+
+### Developers
 
 The `master` branch is where you'll find the most recent, stable release.
 The `develop` branch is the current working branch for development. Both branches are required to pass all unit tests. Any pull requests are first merged with the `develop` branch before being merged into the `master` branch. See [Pull Requests](#pull-requests)
 
-### Pull Requests
+#### Pull Requests
 When starting work on a new feature, branch off from the `develop` branch.
 ```bash
 # clone the repository
@@ -68,7 +66,7 @@ git checkout develop
 git checkout -b newfeature develop
 ```
 
-### Creating a new build
+#### Creating a new build
 To compile the plugin without all the development files use the following commands:
 ```bash
 # Go to the master branch
