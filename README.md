@@ -37,7 +37,7 @@ The settings page if all posts were deleted. De-activate or delete the plugin an
 
 ## Contributing
 
-Anyone is welcome to contribute to Custom Post Type Cleanup plugin. If you find an issue, let us know [here](https://github.com/keesiemeijer/custom-post-type-cleanup/issues?state=open) or open up a forum topic in the [WordPress forums](https://wordpress.org/support/plugin/custom-post-type-cleanup)
+Anyone is welcome to contribute to the Custom Post Type Cleanup plugin. If you find an issue, let us know [here](https://github.com/keesiemeijer/custom-post-type-cleanup/issues?state=open) or open up a forum topic in the [WordPress forums](https://wordpress.org/support/plugin/custom-post-type-cleanup)
 
 ### Help Tranlate this plugin
 
@@ -45,7 +45,7 @@ If you want to contribute translations so other people can use them as well, you
 
 Let me know in the [WordPress forums](https://wordpress.org/support/plugin/custom-post-type-cleanup) if you want to become a [Translation Editor](https://make.wordpress.org/polyglots/handbook/rosetta/theme-plugin-directories/#requesting-new-translation-editors) for this plugin.
 
-### Developers
+### Development
 
 The `master` branch is where you'll find the most recent, stable release.
 The `develop` branch is the current working branch for development. Both branches are required to pass all unit tests. Any pull requests are first merged with the `develop` branch before being merged into the `master` branch. See [Pull Requests](#pull-requests)
