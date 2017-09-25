@@ -30,6 +30,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 if ( is_admin() ) {
 	load_plugin_textdomain( 'custom-post-type-cleanup', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-post-type-cleanup.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/register-post-type.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/functions.php';
+
 	$cpt_cleanup = new CPTC_Post_Type_Cleanup();
 	$cpt_cleanup->init();
+
 }

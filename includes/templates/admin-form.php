@@ -1,20 +1,27 @@
-<div class="wrap rpbt_cache">
+<div class="wrap">
 	<h1><?php _e( 'Custom Post Type Cleanup', 'custom-post-type-cleanup' ); ?></h1>
 	<?php echo $notice; ?>
 	<h3>	
 		<?php
 		/* translators: 1: Total post count, 2: Custom post type count, 3: 'custom post type' or 'custom post types' (single/plural) */
-		printf( _n( '%1$d post from %2$d unused %3$s detected!', '%1$d posts from %2$d unused %3$s detected!', $total, 'custom-post-type-cleanup' ), number_format_i18n( $total ), number_format_i18n( $type_count ), $type_str ); ?>
+		printf( _n( '%1$d post from %2$d unused %3$s detected!', '%1$d posts from %2$d unused %3$s detected!', $total, 'custom-post-type-cleanup' ), $total, $type_count, $type_str );
+		?>
 	</h3>
 	<p>
-		<?php _e( 'Here you can delete posts from custom post types that are currently not registered (no longer in use).', 'custom-post-type-cleanup' ); ?><br/>		 
+		<?php _e( 'Delete posts from custom post types that are currently not registered (no longer in use).', 'custom-post-type-cleanup' ); ?><br/>
 		<?php
 			/* translators: %d: Batch size */
-			printf( __( 'Posts are deleted in batches of %d posts.', 'custom-post-type-cleanup' ), $this->batch_size ); ?>
+			printf( __( 'Posts are deleted in batches of %d posts.', 'custom-post-type-cleanup' ), $this->batch_size );
+			?>
 	</p>
 	<p>
-		<?php _e( "It's recommended you <strong style='font-weight:bold; color:red;'>make a database backup</strong> before proceeding.", 'custom-post-type-cleanup' ); ?>
+		<?php _e( 'If you want to inspect the posts of the unused post types before deleting you can re-register the post types by clicking the following link.', 'custom-post-type-cleanup' ); ?><br/>
+		<a href="<?php echo $admin_url; ?>"><?php _e( 'Register all unused post types for the next 10 minutes', 'custom-post-type-cleanup' ); ?></a><br/>
 	</p>
+	<p>
+		<?php _e( "It's recommended you <strong style='font-weight:bold; color:red;'>make a database backup</strong> before deleting posts.", 'custom-post-type-cleanup' ); ?>
+	</p>
+
 	<hr>
 	<form method="post" action="">
 		<?php wp_nonce_field( 'custom_post_type_cleanup_nonce', 'security' ); ?>
@@ -37,6 +44,7 @@
 		</table>
 		<input id="custom_post_type_cleanup" class="button button-primary" name="custom_post_type_cleanup" value="Delete Posts!" type="submit">
 	</form><br/>
+
 	<hr>
 	<p>
 		<?php
