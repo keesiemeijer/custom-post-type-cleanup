@@ -3,7 +3,7 @@
 /**
  * Get post types no longer in use.
  *
- * @since  1.1.0
+ * @since  1.1.1
  * @return array Array with unused post type names.
  */
 function cptc_get_unused_post_types() {
@@ -20,7 +20,7 @@ function cptc_get_unused_post_types() {
 /**
  * Returns post types in the database.
  *
- * @since 1.0.0
+ * @since 1.1.1
  * @return array Array with post types in the database.
  */
 function cptc_db_post_types() {
@@ -33,7 +33,7 @@ function cptc_db_post_types() {
  * Returns post type posts count for a post type.
  * Todo: check if wp_count_posts can be used for this.
  *
- * @since 1.0.0
+ * @since 1.1.1
  * @param string $post_type Post type.
  * @return integer Post count for a post type.
  */
@@ -46,7 +46,7 @@ function cptc_get_posts_count( $post_type ) {
 /**
  * Returns post ids from a post type.
  *
- * @since 1.0.0
+ * @since 1.1.1
  * @param string  $post_type Post type.
  * @param integer $limit     Limit how many ids are returned. Default 100.
  * @return array Array with post ids.
@@ -61,4 +61,33 @@ function cptc_get_post_ids( $post_type, $limit = 100 ) {
 	$query = "SELECT p.ID FROM $wpdb->posts AS p WHERE p.post_type IN (%s) LIMIT %d";
 
 	return $wpdb->get_col( $wpdb->prepare( $query, $post_type, absint( $limit ) ) );
+}
+
+/**
+ * Returns minutes left from two time stamps.
+ *
+ * @since  1.1.1
+ *
+ * @param int    $from Unix timestamp from which the difference begins.
+ * @param int    $to   Unix timestamp to end the time difference. Default becomes time() if not set.
+ * @return int   Minutes left.
+ */
+function cptc_get_time_diff_in_minutes( $from, $to = '' ) {
+	if ( empty( $to ) ) {
+		$to = time();
+	}
+
+	$diff = (int) abs( $to - $from );
+
+	if ( ! $diff ) {
+		return 0;
+	}
+
+	$mins = round( $diff / MINUTE_IN_SECONDS );
+
+	if ( 1 >= $mins ) {
+		$mins = 1;
+	}
+
+	return $mins;
 }

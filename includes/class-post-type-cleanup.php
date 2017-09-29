@@ -39,6 +39,11 @@ class CPTC_Post_Type_Cleanup {
 	 * @return void
 	 */
 	public function admin_menu() {
+		if ( !current_user_can( 'delete_posts' ) ) {
+			$msg = __( "You don't have sufficient permissions to access this page", 'custom-post-type-cleanup' );
+			wp_die( $msg );
+		}
+
 		$page_hook = add_management_page(
 			__( 'Custom Post Type Cleanup', 'custom-post-type-cleanup' ),
 			__( 'Custom Post Type Cleanup', 'custom-post-type-cleanup' ),
@@ -81,20 +86,29 @@ class CPTC_Post_Type_Cleanup {
 	 * @return void
 	 */
 	public function admin_page() {
+
 		$post_type     = '';
 		$notice        = '';
 		$options       = '';
 		$plugin_url    = admin_url( 'plugins.php#custom-post-type-cleanup' );
 		$admin_url     = admin_url( 'admin.php?page=custom-post-type-cleanup.php' );
+		$transient     = 'custom_post_type_cleanup_unused_post_types';
 		$total         = 0;
 
-		$plugin_text   = _x(
+		$plugin   = _x(
 			'Custom Post Type Cleanup',
-			'Text of link to plugin',
+			'text of link to plugin',
 			'custom-post-type-cleanup'
 		);
 
-		$plugin_link = '<a href="https://github.com/keesiemeijer/custom-post-type-cleanup">' . $plugin_text . '</a>';
+		$documentation = _x(
+			'learn more about unused custom post types',
+			'text of link to plugin documentation',
+			'custom-post-type-cleanup'
+		);
+
+		$plugin_link = '<a href="https://wordpress.org/plugins/custom-post-type-cleanup">' . $plugin . '</a>';
+		$doc_link    = '<a href="https://wordpress.org/plugins/custom-post-type-cleanup">' . $documentation . '</a>';
 
 		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'custom_post_type_cleanup_nonce', 'security' );
@@ -107,22 +121,27 @@ class CPTC_Post_Type_Cleanup {
 
 		if ( $nonce && ! $post_type && isset( $_REQUEST['cptc-unused-post-types'] ) ) {
 			$action    = $_REQUEST['cptc-unused-post-types'];
-			$transient = 'custom_post_type_cleanup_unused_post_types';
 
 			if ( ! empty( $this->unused_cpts ) && ( 'register' === $action ) ) {
-				$msg    = __( 'All unused custom post types are registered for the next 10 minutes', 'custom-post-type-cleanup' );
-				$notice = '<div class="updated"><p>' . $msg . '</p></div>';
-				set_transient( $transient, $this->unused_cpts, 60 );
+				$msg    = __( 'Registered all unused custom post types for the next 10 minutes', 'custom-post-type-cleanup' );
+				$msg    .= '<br/>' . __( '(Reload this page to see them in the admin menu)', 'custom-post-type-cleanup' );
+				$notice .= '<div class="updated"><p>' . $msg . '</p></div>';
+
+				set_transient( $transient, $this->unused_cpts, 60 * 2 );
 				$this->unused_cpts = array();
 			}
 
 			if ( 'unregister' === $action ) {
+
+				$post_types_registered = get_transient( $transient );
+				if ( is_array( $post_types_registered ) && ! empty( $post_types_registered ) ) {
+					$msg = __( 'Stopped registering unused custom post types', 'custom-post-type-cleanup' );
+					$notice = '<div class="updated"><p>' . $msg . '</p></div>';
+				}
+
 				delete_transient( $transient );
 			}
 		}
-
-		$type_count = count( $this->unused_cpts );
-		$type_str   = _n( 'custom post type', 'custom post types', $type_count );
 
 		if ( ! empty( $this->unused_cpts ) ) {
 			foreach ( $this->unused_cpts as $unused_type ) {
@@ -133,16 +152,25 @@ class CPTC_Post_Type_Cleanup {
 				$count = $count ? ' (' . $count . ')' : '';
 				$options .= "<option value='{$value}'{$selected}>{$value}{$count}</option>";
 			}
+			$type_count = count( $this->unused_cpts );
+			$type_str   = _n( 'custom post type', 'custom post types', $type_count );
 			$nonce = '&registernonce=' . wp_create_nonce( 'cptc_register_post_type' );
 			$admin_url .= '&cptc-unused-post-types=register' . $nonce;
+
 			require plugin_dir_path( __FILE__ ) . 'templates/admin-form.php';
 		} else {
 			$registered_post_types = get_transient( 'custom_post_type_cleanup_unused_post_types' );
 			if ( is_array( $registered_post_types ) && ! empty( $registered_post_types ) ) {
+				$mins  = get_option( "_transient_timeout_{$transient}" );
+				$mins  = $mins ? cptc_get_time_diff_in_minutes( $mins ) : 0;
 				$nonce = '&registernonce=' . wp_create_nonce( 'cptc_register_post_type' );
 				$admin_url .= '&cptc-unused-post-types=unregister' . $nonce;
+				$type_count = count( $registered_post_types );
+				$type_str   = _n( 'custom post type', 'custom post types', $type_count );
+
 				require plugin_dir_path( __FILE__ ) . 'templates/admin-registered-post-types.php';
 			} else {
+
 				require plugin_dir_path( __FILE__ ) . 'templates/admin-no-posts.php';
 			}
 		}

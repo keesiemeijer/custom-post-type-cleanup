@@ -15,6 +15,7 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 		parent::setUp();
 		$this->set_batch_size( 5 );
 		_delete_all_posts();
+		add_filter( 'wp_die_handler', array( $this, 'get_wp_die_handler' ) );
 	}
 
 	/**
@@ -115,6 +116,27 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 	}
 
 	/**
+	 * Test delete capability message
+	 */
+	function test_delete_capability() {
+		$this->create_not_registered_post_type_posts( 'cpt', 10 );
+		$current_user = get_current_user_id();
+		$user = self::factory()->user->create( array( 'role' => 'administrator' ) );
+		$role = get_role( 'administrator' );
+		$role->remove_cap( 'delete_posts' );
+		wp_set_current_user( $user );
+
+		ob_start();
+		$this->cleanup->admin_menu();
+		$admin_page = ob_get_clean();
+
+		$this->assertContains( "You don't have sufficient permissions to access this page", $admin_page );
+
+		$role->add_cap( 'delete_posts' );
+		wp_set_current_user( $current_user );
+	}
+
+	/**
 	 * Test admin page without submitting form and no unused post types found.
 	 */
 	function test_admin_page_without_submitting_form_and_no_unused_post_types() {
@@ -122,5 +144,13 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 		$admin_page = $this->get_admin_page();
 		$this->assertNotContains( 'Error:', $admin_page );
 		$this->assertNotContains( 'Notice:', $admin_page );
+	}
+
+	function get_wp_die_handler( $handler ) {
+
+		return array( $this, 'wp_die_handler' );
+	}
+	function wp_die_handler( $message ) {
+		echo $message;
 	}
 }

@@ -7,14 +7,15 @@
 class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 
 	protected $cleanup;
+	protected $user_id;
 
 	/**
 	 * Set up.
 	 */
 	function setUp() {
 		$this->cleanup = new CPTC_Post_Type_Cleanup();
-		$user_id       = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		$user          = wp_set_current_user( $user_id );
+		$this->user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$user          = wp_set_current_user( $this->user_id );
 	}
 
 	/**
