@@ -127,7 +127,7 @@ class CPTC_Post_Type_Cleanup {
 				$msg    .= '<br/>' . __( '(Reload this page to see them in the admin menu)', 'custom-post-type-cleanup' );
 				$notice .= '<div class="updated"><p>' . $msg . '</p></div>';
 
-				set_transient( $transient, $this->unused_cpts, 60 * 2 );
+				set_transient( $transient, $this->unused_cpts, 60 * 10 );
 				$this->unused_cpts = array();
 			}
 
