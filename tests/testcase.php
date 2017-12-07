@@ -89,7 +89,7 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 	function mock_admin_page_globals( $post_type = 'cpt' ) {
 		$_REQUEST['security'] = wp_create_nonce( 'custom_post_type_cleanup_nonce' );
 		$_SERVER['REQUEST_METHOD'] = 'POST';
-		$_POST['custom_post_type_cleanup'] = true;
+		$_POST['cptc_delete'] = true;
 		$_POST['cptc_post_type'] = $post_type;
 	}
 

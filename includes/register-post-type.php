@@ -1,12 +1,12 @@
 <?php
 
-add_action( 'init', 'cptc_register_unused_custom_post_types' );
+add_action( 'init', 'cptc_register_unused_custom_post_types', 999 );
 
 /**
  * Registers unused custom post types.
  *
- * Only registers post types if the transient
- * custom_post_type_cleanup_unused_post_types exists.
+ * Only registers post types if the unused cpt's transient exists
+ * And we're not unregistering unused cpt's in the plugin settings page.
  *
  * @since  1.1.1
  */
@@ -16,22 +16,21 @@ function cptc_register_unused_custom_post_types() {
 		return;
 	}
 
-	if ( isset( $_REQUEST['cptc-unused-post-types'] ) ) {
-		$action = $_REQUEST['cptc-unused-post-types'];
-		if ( 'unregister' === $action ) {
-			return;
-		}
-	}
-
-	$registerd_post_types = get_transient( 'custom_post_type_cleanup_unused_post_types' );
-	if ( ! ( is_array( $registerd_post_types ) && ! empty( $registerd_post_types ) ) ) {
+	if ( 'unregister' === cptc_get_request() ) {
+		// Unregistering cpt's in the plugin settings page.
 		return;
 	}
 
-	foreach ( $registerd_post_types as $post_type ) {
+	$transient_post_types = cptc_get_transient_post_types();
+	if ( ! $transient_post_types ) {
+		return;
+	}
+
+	foreach ( $transient_post_types as $post_type ) {
 		if ( post_type_exists( $post_type ) ) {
 			continue;
 		}
+
 		// Register the non-existent post type.
 		register_post_type(
 			$post_type,
@@ -66,48 +65,41 @@ function cptc_add_admin_notice_for_unused_post_types() {
 		return;
 	}
 
-	$transient            = 'custom_post_type_cleanup_unused_post_types';
-	$registerd_post_types = get_transient( $transient );
-	if ( ! ( is_array( $registerd_post_types ) && ! empty( $registerd_post_types ) ) ) {
+	$transient_post_types = cptc_get_transient_post_types();
+	if ( ! $transient_post_types ) {
 		return;
 	}
 
-	if ( ! in_array( $post_type, $registerd_post_types ) ) {
+	if ( ! in_array( $post_type, $transient_post_types ) ) {
 		return;
 	}
 
-	$time = get_option( "_transient_timeout_{$transient}" );
-
+	$time      = cptc_get_transient_time();
 	if ( ! $time ) {
 		return;
 	}
 
-	$href   = admin_url( 'admin.php?page=custom-post-type-cleanup.php' );
-	$link   = '<a href="%1$s">%2$s</a>';
-	$plugin = sprintf( $link, $href,  __( 'Custom Post Type Cleanup', 'custom-post-type-cleanup' ) );
-
-	$nonce  = '&registernonce=' . wp_create_nonce( 'cptc_register_post_type' );
-	$href   .= '&cptc-unused-post-types=unregister' . $nonce;
-	$unregister = sprintf( $link, $href, __( 'stop registering now', 'custom-post-type-cleanup' ) );
-
-	$since = '';
-	$mins  = cptc_get_time_diff_in_minutes( $time );
-	$msg   = sprintf(
+	$href       = admin_url( 'admin.php?page=custom-post-type-cleanup.php#unregister' );
+	$link       = '<a href="%1$s">%2$s</a>';
+	$plugin     = sprintf( $link, $href,  __( 'Custom Post Type Cleanup', 'custom-post-type-cleanup' ) );
+	$unregister = sprintf( $link, $href, __( 'stop registering it now', 'custom-post-type-cleanup' ) );
+	$since      = '';
+	$msg        = sprintf(
 		/* translators: %s: link to plugin */
-			__( 'This custom post type is registered for a limited time by the %s plugin.', 'custom-post-type-cleanup' ),
+		__( 'This custom post type is registered for a limited time by the %s plugin.', 'custom-post-type-cleanup' ),
 		$plugin
 	);
 
-	if ( 1 === (int) $mins ) {
+	if ( 1 === (int) $time ) {
 		$since = sprintf(
 			/* translators: %d: total of minutes left */
-			__( '%d minute to go before this post type is no longer registered.', 'custom-post-type-cleanup' ), $mins
+			__( '%d minute to go before this post type is no longer registered.', 'custom-post-type-cleanup' ), $time
 		);
-	} elseif ( $mins > 1 ) {
+	} elseif ( $time > 1 ) {
 		$since = sprintf(
 			/* translators: %d: total of minutes left */
 			__( '%d minutes to go before this post type is no longer registered.', 'custom-post-type-cleanup' ),
-			$mins
+			$time
 		);
 	}
 

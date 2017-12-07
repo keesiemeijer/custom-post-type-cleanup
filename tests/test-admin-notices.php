@@ -6,8 +6,6 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 
 	protected $cleanup;
 
-
-
 	/**
 	 * Set up.
 	 */

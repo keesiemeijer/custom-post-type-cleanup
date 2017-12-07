@@ -7,6 +7,9 @@
 		</p>
 	</div>
 	<p>
+		<?php echo $doc_link; ?>
+	</p>
+	<p>
 		<?php 
 			printf(
 		 		/* translators: %s: wp-admin plugin page url */

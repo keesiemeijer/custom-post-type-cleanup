@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Get post types no longer in use.
  *
@@ -64,12 +63,39 @@ function cptc_get_post_ids( $post_type, $limit = 100 ) {
 }
 
 /**
+ * Get post types from plugin transient.
+ *
+ * @since  1.1.1
+ * @return array Array with unused post type names or empty array.
+ */
+function cptc_get_transient_post_types() {
+	$post_types = get_transient( 'custom_post_type_cleanup_unused_post_types' );
+	if ( ! ( is_array( $post_types ) && ! empty( $post_types ) ) ) {
+		return array();
+	}
+
+	return $post_types;
+}
+
+/**
+ * Get time left for the plugin transient.
+ *
+ * @since  1.1.1
+ * @return int Minutes left.
+ */
+function cptc_get_transient_time() {
+	$transient = 'custom_post_type_cleanup_unused_post_types';
+	$time      = get_option( "_transient_timeout_{$transient}" );
+	return $time ? cptc_get_time_diff_in_minutes( $time ) : 0;
+}
+
+/**
  * Returns minutes left from two time stamps.
  *
  * @since  1.1.1
  *
- * @param int    $from Unix timestamp from which the difference begins.
- * @param int    $to   Unix timestamp to end the time difference. Default becomes time() if not set.
+ * @param int $from Unix timestamp from which the difference begins.
+ * @param int $to   Unix timestamp to end the time difference. Default becomes time() if not set.
  * @return int   Minutes left.
  */
 function cptc_get_time_diff_in_minutes( $from, $to = '' ) {
