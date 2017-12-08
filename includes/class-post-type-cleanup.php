@@ -120,6 +120,8 @@ class CPTC_Post_Type_Cleanup {
 		} elseif ( 'register' === $request ) {
 			if ( ! empty( $this->unused_cpts ) ) {
 				set_transient( $transient, $this->unused_cpts, 60 * $transient_time );
+
+				/* translators: %d: time in minutes left */
 				$msg    = sprintf( __( 'Registered all unused custom post types for the next %s minutes', 'custom-post-type-cleanup' ), $transient_time );
 				$reload = "<a href='{$admin_url}'>" . __( 'Reload this page', 'custom-post-type-cleanup' ) . '</a>';
 

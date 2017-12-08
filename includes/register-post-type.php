@@ -8,7 +8,7 @@ add_action( 'init', 'cptc_register_unused_custom_post_types', 999 );
  * Only registers post types if the unused cpt's transient exists
  * And we're not unregistering unused cpt's in the plugin settings page.
  *
- * @since  1.1.1
+ * @since  1.2.0
  */
 function cptc_register_unused_custom_post_types() {
 
@@ -51,7 +51,7 @@ add_action( 'admin_notices', 'cptc_add_admin_notice_for_unused_post_types' );
 /**
  * Adds plugin notice to registered unused post type admin screens
  *
- * @since 1.1.1
+ * @since 1.2.0
  */
 function cptc_add_admin_notice_for_unused_post_types() {
 	$screen = get_current_screen();
@@ -74,7 +74,7 @@ function cptc_add_admin_notice_for_unused_post_types() {
 		return;
 	}
 
-	$time      = cptc_get_transient_time();
+	$time = cptc_get_transient_time();
 	if ( ! $time ) {
 		return;
 	}
@@ -92,12 +92,12 @@ function cptc_add_admin_notice_for_unused_post_types() {
 
 	if ( 1 === (int) $time ) {
 		$since = sprintf(
-			/* translators: %d: total of minutes left */
+			/* translators: %d: 1 minute left */
 			__( '%d minute to go before this post type is no longer registered.', 'custom-post-type-cleanup' ), $time
 		);
 	} elseif ( $time > 1 ) {
 		$since = sprintf(
-			/* translators: %d: total of minutes left */
+			/* translators: %d: more than one minute left */
 			__( '%d minutes to go before this post type is no longer registered.', 'custom-post-type-cleanup' ),
 			$time
 		);

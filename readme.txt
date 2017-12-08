@@ -1,8 +1,8 @@
 === Custom Post Type Cleanup ===
 Contributors: keesiemeijer
 Requires at least: 4.0
-Tested up to: 4.8
-Stable tag: 1.1.1
+Tested up to: 4.9
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,9 @@ There are a lot of plugins that clean your database (by removing revisions, draf
 
 This plugin provides an easy way to detect and remove posts from post types that are no longer in use. The settings page for this plugin is at wp-admin > Tools > Custom Post Type Cleanup.
 
-**Note**: The proper WordPress delete function [wp_delete_post](https://developer.wordpress.org/reference/functions/wp_delete_post/) is used instead of running a direct MySQL query to delete the posts. This way all associated post data (comments, post meta etc.) are also deleted from the database. 
+**Note**: The proper WordPress delete function [wp_delete_post](https://developer.wordpress.org/reference/functions/wp_delete_post/) is used instead of running a direct MySQL query to delete the posts. This way all associated post data (comments, post meta etc.) are also deleted from the database.
+
+Since version 1.2.0 you can re-register unused custom post types for a limited period of time. This allows you to inspect and delete the posts like you would normally (in the wp-admin).
 
 == Installation ==
 Follow these instructions to install the plugin.
@@ -31,4 +33,5 @@ Follow these instructions to install the plugin.
 == Screenshots ==
 
 1. Plugin page
-2. Plugin page after cleaning up all unused post type posts
+2. Plugin page after re-registering unused custom post types.
+3. Plugin page after cleaning up all unused post type posts

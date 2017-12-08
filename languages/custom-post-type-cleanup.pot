@@ -2,10 +2,10 @@
 # This file is distributed under the GPL v2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Custom Post Type Cleanup 1.1.1\n"
+"Project-Id-Version: Custom Post Type Cleanup 1.2.0\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/custom-post-type-cleanup\n"
-"POT-Creation-Date: 2017-08-20 21:33:58+00:00\n"
+"POT-Creation-Date: 2017-12-08 14:08:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,56 +23,106 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: grunt-wp-i18n1.0.0\n"
+"X-Generator: grunt-wp-i18n1.0.1\n"
+
+#: includes/class-post-type-cleanup.php:35
+msgid "You don't have sufficient permissions to access this page"
+msgstr ""
 
 #. Plugin Name of the plugin/theme
 msgid "Custom Post Type Cleanup"
 msgstr ""
 
-#: includes/class-post-type-cleanup.php:66
+#: includes/class-post-type-cleanup.php:63
 #. translators: %s: post type name
 msgid "You are about to permanently delete posts from the post_type: %s."
 msgstr ""
 
-#: includes/class-post-type-cleanup.php:67
+#: includes/class-post-type-cleanup.php:64
 msgid "'Cancel' to stop, 'OK' to delete."
 msgstr ""
 
-#: includes/class-post-type-cleanup.php:105
+#: includes/class-post-type-cleanup.php:125
+#. translators: %d: time in minutes left
+msgid "Registered all unused custom post types for the next %s minutes"
+msgstr ""
+
+#: includes/class-post-type-cleanup.php:126
+msgid "Reload this page"
+msgstr ""
+
+#: includes/class-post-type-cleanup.php:129
+#. translators: %s: link to reload the page
+msgid "(%s to see them in the admin menu)"
+msgstr ""
+
+#: includes/class-post-type-cleanup.php:136
+msgid "Stopped registering unused custom post types"
+msgstr ""
+
+#: includes/class-post-type-cleanup.php:153
+#: includes/class-post-type-cleanup.php:162
 msgid "custom post type"
 msgid_plural "custom post types"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-post-type-cleanup.php:190
+#: includes/class-post-type-cleanup.php:213
 msgid "Error: invalid post type"
 msgstr ""
 
-#: includes/class-post-type-cleanup.php:199
+#: includes/class-post-type-cleanup.php:222
 #. translators: %s: post type name
 msgid "Notice: No posts found for the post type: %s"
 msgstr ""
 
-#: includes/class-post-type-cleanup.php:214
+#: includes/class-post-type-cleanup.php:237
 #. translators: 1: deleted posts count, 2: post type name
 msgid "Deleted %1$d post from the post type: %2$s"
 msgid_plural "Deleted %1$d posts from the post type: %2$s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-post-type-cleanup.php:232
+#: includes/class-post-type-cleanup.php:255
 #. translators: 1: posts count, 2: post type name
 msgid "Still %1$d post left in the database from the post type: %2$s"
 msgid_plural "Still %1$d posts left in the database from the post type: %2$s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-post-type-cleanup.php:250
+#: includes/class-post-type-cleanup.php:273
 #. translators: %s: post type name
 msgid "No more posts left in the database from the post type: %s"
 msgstr ""
 
-#: includes/templates/admin-form.php:7
+#: includes/register-post-type.php:85
+msgid "stop registering it now"
+msgstr ""
+
+#: includes/register-post-type.php:89
+#. translators: %s: link to plugin
+msgid "This custom post type is registered for a limited time by the %s plugin."
+msgstr ""
+
+#: includes/register-post-type.php:96
+#. translators: %d: 1 minute left
+msgid "%d minute to go before this post type is no longer registered."
+msgstr ""
+
+#: includes/register-post-type.php:101
+#. translators: %d: more than one minute left
+msgid "%d minutes to go before this post type is no longer registered."
+msgstr ""
+
+#: includes/templates/admin-form.php:5
+msgid "Delete posts from unused custom post types."
+msgstr ""
+
+#: includes/templates/admin-form.php:10
+msgid "Delete Posts"
+msgstr ""
+
+#: includes/templates/admin-form.php:15
 #. translators: 1: Total post count, 2: Custom post type count, 3: 'custom post
 #. type' or 'custom post types' (single/plural)
 msgid "%1$d post from %2$d unused %3$s detected!"
@@ -80,30 +130,50 @@ msgid_plural "%1$d posts from %2$d unused %3$s detected!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/templates/admin-form.php:10
+#: includes/templates/admin-form.php:19
 msgid ""
-"Here you can delete posts from custom post types that are currently not "
-"registered (no longer in use)."
+"It's recommended you <strong style='font-weight:bold; color:red;'>make a "
+"database backup</strong> before deleting posts."
 msgstr ""
 
-#: includes/templates/admin-form.php:13
+#: includes/templates/admin-form.php:36
+msgid "The post type you want to delete posts from."
+msgstr ""
+
+#: includes/templates/admin-form.php:41
+msgid "Delete Posts!"
+msgstr ""
+
+#: includes/templates/admin-form.php:45
 #. translators: %d: Batch size
 msgid "Posts are deleted in batches of %d posts."
 msgstr ""
 
-#: includes/templates/admin-form.php:16
+#: includes/templates/admin-form.php:50
+msgid "Re-register unused custom post types"
+msgstr ""
+
+#: includes/templates/admin-form.php:53
 msgid ""
-"It's recommended you <strong style='font-weight:bold; color:red;'>make a "
-"database backup</strong> before proceeding."
+"Register unused custom post types for a limited time to inspect or delete "
+"the posts in the wp-admin itself."
 msgstr ""
 
-#: includes/templates/admin-form.php:33
-msgid "The post type you want to delete posts from."
+#: includes/templates/admin-form.php:56
+msgid ""
+"<strong>Note</strong>: The custom post type posts can not be viewed in the "
+"front side of your website."
 msgstr ""
 
-#: includes/templates/admin-form.php:44
-#: includes/templates/admin-no-posts.php:22
+#: includes/templates/admin-form.php:59
+msgid "Register all unused custom post types for the next %s minutes"
+msgstr ""
+
+#: includes/templates/admin-form.php:66
+#: includes/templates/admin-no-posts.php:25
+#: includes/templates/admin-registered-post-types.php:60
 #. translators: %s: plugin link
+#. translators: %s: WordPress plugin repository link
 msgid "This page is generated by the %s plugin."
 msgstr ""
 
@@ -111,9 +181,55 @@ msgstr ""
 msgid "There are no unused custom post type posts found."
 msgstr ""
 
-#: includes/templates/admin-no-posts.php:13
+#: includes/templates/admin-no-posts.php:16
 #. translators: %s: wp-admin plugin page url
 msgid "<a href=\"%s\">De-activate this plugin</a> or try again later."
+msgstr ""
+
+#: includes/templates/admin-registered-post-types.php:9
+msgid ""
+"This plugin has registed all unused custom post types for a limited period "
+"of time."
+msgstr ""
+
+#: includes/templates/admin-registered-post-types.php:13
+msgid ""
+"Inspect and delete posts from unused custom post types by going to their "
+"wp-admin page."
+msgstr ""
+
+#: includes/templates/admin-registered-post-types.php:17
+msgid "Registered unused custom post types"
+msgstr ""
+
+#: includes/templates/admin-registered-post-types.php:20
+msgid "The following unused custom post types are registered by this plugin."
+msgstr ""
+
+#: includes/templates/admin-registered-post-types.php:32
+#. translators: %d: 1 minute left
+msgid ""
+"<strong>%d minute</strong> to go before these post type are no longer "
+"registered."
+msgstr ""
+
+#: includes/templates/admin-registered-post-types.php:38
+#. translators: %d: more than one minutes left
+msgid ""
+"<strong>%d minutes</strong> to go before these post types are no longer "
+"registered."
+msgstr ""
+
+#: includes/templates/admin-registered-post-types.php:44
+msgid "Stop registering unused custom post types"
+msgstr ""
+
+#: includes/templates/admin-registered-post-types.php:47
+msgid "To stop registering the unused custom post types click the button below."
+msgstr ""
+
+#: includes/templates/admin-registered-post-types.php:52
+msgid "Stop registering unused custom post types now"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -124,12 +240,17 @@ msgstr ""
 msgid "keesiemeijer"
 msgstr ""
 
-#: includes/class-post-type-cleanup.php:90
-msgctxt "Text of link to plugin"
+#: includes/class-post-type-cleanup.php:92
+msgctxt "text of link to plugin"
 msgid "Custom Post Type Cleanup"
 msgstr ""
 
-#: includes/templates/admin-form.php:25
+#: includes/class-post-type-cleanup.php:98
+msgctxt "text of link to plugin documentation"
+msgid "learn more about unused custom post types"
+msgstr ""
+
+#: includes/templates/admin-form.php:28
 msgctxt "Form label text for post type"
-msgid "Post type"
+msgid "Unused post type"
 msgstr ""

@@ -2,7 +2,7 @@
 /**
  * Get $_POST request action from the settings page.
  *
- * @since  1.1.1
+ * @since  1.2.0
  *
  * @param string $check_referer Check plugin nonce if set to 'check_referer'
  * @return string Plugin request action 'delete', 'register' or 'unregister'/
@@ -38,7 +38,7 @@ function cptc_get_request( $check_referer = '' ) {
 /**
  * Returns the post type from a $_POST request.
  *
- * @since 1.1.1
+ * @since 1.2.0
  *
  * @param string $check_referer Check plugin nonce if set to 'check_referer'
  * @return string Post type to delete posts from or empty string.
