@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Custom Post Type Cleanup
-Version: 1.1.0
+Version: 1.2.0
 Plugin URI:
 Description: Detect and delete posts from custom post types that are no longer in use.
-Author: keesiemijer
+Author: keesiemeijer
 Author URI:
 License: GPL v2+
 Text Domain: custom-post-type-cleanup
@@ -28,7 +28,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 if ( is_admin() ) {
+	load_plugin_textdomain( 'custom-post-type-cleanup', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-post-type-cleanup.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/register-post-type.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/request.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/functions.php';
+
 	$cpt_cleanup = new CPTC_Post_Type_Cleanup();
 	$cpt_cleanup->init();
+
 }

@@ -17,7 +17,7 @@ class CPTC_Test_Post_Types extends CPTC_Post_Type_Cleanup_UnitTestCase {
 	 */
 	function test_database_post_types_default() {
 		$this->create_posts( 'post' );
-		$post_types = $this->cleanup->db_post_types();
+		$post_types = cptc_db_post_types();
 		$this->assertEquals( array( 'post' ), $post_types );
 	}
 
@@ -26,7 +26,7 @@ class CPTC_Test_Post_Types extends CPTC_Post_Type_Cleanup_UnitTestCase {
 	 */
 	function test_database_post_types() {
 		$this->create_not_registered_post_type_posts();
-		$post_types = $this->cleanup->db_post_types();
+		$post_types = cptc_db_post_types();
 		$this->assertEquals( array( 'cpt', 'post' ), $post_types );
 	}
 
@@ -37,7 +37,7 @@ class CPTC_Test_Post_Types extends CPTC_Post_Type_Cleanup_UnitTestCase {
 	 */
 	function test_unused_post_type_found() {
 		$this->create_not_registered_post_type_posts();
-		$this->assertEquals( array( 'cpt' ), $this->cleanup->get_unused_post_types() );
+		$this->assertEquals( array( 'cpt' ), cptc_get_unused_post_types() );
 	}
 
 	/**

@@ -12,6 +12,8 @@ if ( ! $_tests_dir ) {
 require_once $_tests_dir . '/includes/functions.php';
 
 // Load the cleanup class.
+require dirname( dirname( __FILE__ ) ) . '/includes/functions.php';
+require dirname( dirname( __FILE__ ) ) . '/includes/request.php';
 require dirname( dirname( __FILE__ ) ) . '/includes/class-post-type-cleanup.php';
 
 // Start up the WP testing environment.

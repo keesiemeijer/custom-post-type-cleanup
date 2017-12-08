@@ -14,7 +14,7 @@
 			localStorage.removeItem( "cptc_run_delete_dialog" );
 		}
 
-		$( "input[name='custom_post_type_cleanup']" ).on( "click", function( e ) {
+		$( "input[name='cptc_delete']" ).on( "click", function( e ) {
 
 			if ( ( 'localStorage' in window ) && ( window[ 'localStorage' ] !== null ) ) {
 

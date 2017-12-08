@@ -11,14 +11,6 @@ class CPTC_Post_Type_Cleanup {
 	private $unused_cpts;
 
 	/**
-	 * Batch size.
-	 *
-	 * @since  1.1.0
-	 * @var int
-	 */
-	private $batch_size = 100;
-
-	/**
 	 * Initialize plugin
 	 *
 	 * @since 1.0.0
@@ -39,6 +31,11 @@ class CPTC_Post_Type_Cleanup {
 	 * @return void
 	 */
 	public function admin_menu() {
+		if ( ! current_user_can( 'delete_posts' ) ) {
+			$msg = __( "You don't have sufficient permissions to access this page", 'custom-post-type-cleanup' );
+			wp_die( $msg );
+		}
+
 		$page_hook = add_management_page(
 			__( 'Custom Post Type Cleanup', 'custom-post-type-cleanup' ),
 			__( 'Custom Post Type Cleanup', 'custom-post-type-cleanup' ),
@@ -81,42 +78,93 @@ class CPTC_Post_Type_Cleanup {
 	 * @return void
 	 */
 	public function admin_page() {
-		$post_type     = '';
-		$notice        = '';
-		$options       = '';
-		$plugin_url    = admin_url( 'plugins.php#custom-post-type-cleanup' );
-		$total         = 0;
 
-		$plugin_text   = _x(
+		$request        = '';
+		$post_type      = '';
+		$notice         = '';
+		$options        = '';
+		$plugin_url     = admin_url( 'plugins.php#custom-post-type-cleanup' );
+		$admin_url      = admin_url( 'admin.php?page=custom-post-type-cleanup.php' );
+		$transient      = 'custom_post_type_cleanup_unused_post_types';
+		$total          = 0;
+		$transient_time = 10;
+
+		$plugin   = _x(
 			'Custom Post Type Cleanup',
-			'Text of link to plugin',
+			'text of link to plugin',
 			'custom-post-type-cleanup'
 		);
 
-		$plugin_link = '<a href="https://github.com/keesiemeijer/custom-post-type-cleanup">' . $plugin_text . '</a>';
+		$documentation = _x(
+			'learn more about unused custom post types',
+			'text of link to plugin documentation',
+			'custom-post-type-cleanup'
+		);
 
-		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-			check_admin_referer( 'custom_post_type_cleanup_nonce', 'security' );
-			$post_type = $this->get_requested_post_type();
-			$notice    = $this->delete_posts( stripslashes_deep( $_POST ) );
+		$plugin_link = '<a href="https://wordpress.org/plugins/custom-post-type-cleanup">' . $plugin . '</a>';
+		$doc_link    = '<a href="https://wordpress.org/plugins/custom-post-type-cleanup">' . $documentation . '</a>';
+
+		$request = cptc_get_request( 'check_referer' );
+
+		/**
+		 * Filter the batch size.
+		 *
+		 * @param int $batch_size Batch size. Default 100.
+		 */
+		$batch_size = apply_filters( 'custom_post_type_cleanup_batch_size', 100, $post_type );
+		$batch_size = absint( $batch_size ) ? absint( $batch_size ) : 100;
+
+		if ( 'delete' === $request ) {
+			$post_type = cptc_get_requested_post_type( 'check_referer' );
+			$notice    = $this->delete_posts( $post_type, $batch_size );
+		} elseif ( 'register' === $request ) {
+			if ( ! empty( $this->unused_cpts ) ) {
+				set_transient( $transient, $this->unused_cpts, 60 * $transient_time );
+
+				/* translators: %d: time in minutes left */
+				$msg    = sprintf( __( 'Registered all unused custom post types for the next %s minutes', 'custom-post-type-cleanup' ), $transient_time );
+				$reload = "<a href='{$admin_url}'>" . __( 'Reload this page', 'custom-post-type-cleanup' ) . '</a>';
+
+				/* translators: %s: link to reload the page */
+				$msg    .= '<br/>' . sprintf( __( '(%s to see them in the admin menu)', 'custom-post-type-cleanup' ), $reload );
+				$notice .= '<div class="updated"><p>' . $msg . '</p></div>';
+				$this->unused_cpts = array();
+			}
+		} elseif ( 'unregister' === $request ) {
+			$transient_post_types = cptc_get_transient_post_types();
+			if ( $transient_post_types ) {
+				$msg = __( 'Stopped registering unused custom post types', 'custom-post-type-cleanup' );
+				$notice = '<div class="updated"><p>' . $msg . '</p></div>';
+			}
+
+			delete_transient( $transient );
 		}
-
-		$type_count = count( $this->unused_cpts );
-		$type_str   = _n( 'custom post type', 'custom post types', $type_count );
 
 		if ( ! empty( $this->unused_cpts ) ) {
 			foreach ( $this->unused_cpts as $unused_type ) {
 				$selected = ( $unused_type === $post_type ) ? " selected='selected'" : '';
 				$value = esc_attr( $unused_type );
-				$count = $this->get_posts_count( $unused_type );
+				$count = cptc_get_posts_count( $unused_type );
 				$total += $count;
-				$count = $count ? ' (' . $count . ')' :  '';
+				$count = $count ? ' (' . $count . ')' : '';
 				$options .= "<option value='{$value}'{$selected}>{$value}{$count}</option>";
 			}
+			$type_count = count( $this->unused_cpts );
+			$type_str   = _n( 'custom post type', 'custom post types', $type_count );
 
 			require plugin_dir_path( __FILE__ ) . 'templates/admin-form.php';
 		} else {
-			require plugin_dir_path( __FILE__ ) . 'templates/admin-no-posts.php';
+			$transient_post_types = cptc_get_transient_post_types();
+
+			if ( $transient_post_types ) {
+				$minutes_left = cptc_get_transient_time();
+				$type_count   = count( $transient_post_types );
+				$type_str     = _n( 'custom post type', 'custom post types', $type_count );
+
+				require plugin_dir_path( __FILE__ ) . 'templates/admin-registered-post-types.php';
+			} else {
+				require plugin_dir_path( __FILE__ ) . 'templates/admin-no-posts.php';
+			}
 		}
 	}
 
@@ -126,24 +174,20 @@ class CPTC_Post_Type_Cleanup {
 	 * @since  1.1.0
 	 */
 	public function register_post_type() {
-
 		// Unregistered (unused) post types.
-		$this->unused_cpts = $this->get_unused_post_types();
+		$this->unused_cpts = cptc_get_unused_post_types();
+
+		if ( 'unregister' === cptc_get_request( 'check_referer' ) ) {
+			return;
+		}
 
 		// The post type from a $_POST request (to delete posts from).
-		$post_type = $this->get_requested_post_type();
-
-		/**
-		 * Filter the batch size.
-		 *
-		 * @param int $batch_size Batch size. Default 100.
-		 */
-		$batch_size = apply_filters( 'custom_post_type_cleanup_batch_size', $this->batch_size, $post_type );
-		$this->batch_size = absint( $batch_size );
+		$post_type = cptc_get_requested_post_type( 'check_referer' );
 
 		if ( ! empty( $this->unused_cpts ) && ! empty( $post_type ) ) {
 			// Register the non-existent post type.
-			register_post_type( $post_type,
+			register_post_type(
+				$post_type,
 				array(
 					'public' => false,
 					'hierarchical' => true, // Children are re-assigned.
@@ -153,38 +197,17 @@ class CPTC_Post_Type_Cleanup {
 	}
 
 	/**
-	 * Returns the post type from a $_POST request.
-	 *
-	 * @since 1.0.0
-	 * @return string Post type to delete posts from or empty string.
-	 */
-	private function get_requested_post_type() {
-		if ( 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
-			return '';
-		}
-
-		$request = stripslashes_deep( $_POST );
-
-		// Check it's this plugin's settings form that was submitted.
-		if ( ! isset( $request['custom_post_type_cleanup'] ) ) {
-			return '';
-		}
-
-		return isset( $request['cptc_post_type'] ) ? $request['cptc_post_type'] : '';
-	}
-
-	/**
 	 * Delete posts from the database.
 	 *
 	 * @since 1.0.0
-	 * @param unknown $args array $_POST request with post type to delete posts from.
+	 * @param string $post_type Post type to delete posts from.
+	 * @param int    $limit     Number of posts to delete. Default 100;
 	 * @return string Admin notices.
 	 */
-	private function delete_posts( $args ) {
+	private function delete_posts( $post_type, $limit = 100 ) {
 		global $wpdb;
 
 		$msg       = '';
-		$post_type = isset( $args['cptc_post_type'] ) ? $args['cptc_post_type'] : '';
 
 		if ( empty( $post_type ) || ! post_type_exists( $post_type ) ) {
 			$msg = __( 'Error: invalid post type', 'custom-post-type-cleanup' );
@@ -192,7 +215,7 @@ class CPTC_Post_Type_Cleanup {
 		}
 
 		// Get post ids for this post type in batches.
-		$db_post_ids = $this->get_post_ids( $post_type, $this->batch_size );
+		$db_post_ids = cptc_get_post_ids( $post_type, $limit );
 
 		if ( empty( $db_post_ids ) ) {
 			/* translators: %s: post type name */
@@ -223,7 +246,7 @@ class CPTC_Post_Type_Cleanup {
 		}
 
 		// Check if there more posts from this post type to delete.
-		$db_post_ids = $this->get_post_ids( $post_type );
+		$db_post_ids = cptc_get_post_ids( $post_type );
 
 		if ( ! empty( $db_post_ids ) ) {
 			$count = count( $db_post_ids );
@@ -254,68 +277,5 @@ class CPTC_Post_Type_Cleanup {
 		}
 
 		return $msg;
-	}
-
-	/**
-	 * Get post types no longer in use.
-	 *
-	 * @since  1.1.0
-	 * @return array Array with unused post type names.
-	 */
-	public function get_unused_post_types() {
-		$unused_cpts   = array();
-		$post_types    = array_keys( get_post_types() );
-		$db_post_types = $this->db_post_types();
-
-		if ( ! empty( $db_post_types ) ) {
-			$unused_cpts = array_diff( $db_post_types, $post_types );
-		}
-		return $unused_cpts;
-	}
-
-	/**
-	 * Returns post types in the database.
-	 *
-	 * @since 1.0.0
-	 * @return array Array with post types in the database.
-	 */
-	public function db_post_types() {
-		global $wpdb;
-		$query = "SELECT DISTINCT post_type FROM $wpdb->posts";
-		return $wpdb->get_col( $query );
-	}
-
-	/**
-	 * Returns post type posts count for a post type.
-	 * Todo: check if wp_count_posts can be used for this.
-	 *
-	 * @since 1.0.0
-	 * @param string $post_type Post type.
-	 * @return integer Post count for a post type.
-	 */
-	public function get_posts_count( $post_type ) {
-		global $wpdb;
-		$query = "SELECT COUNT(p.ID) FROM $wpdb->posts AS p WHERE p.post_type = %s";
-		return $wpdb->get_var( $wpdb->prepare( $query, $post_type ) );
-	}
-
-	/**
-	 * Returns post ids from a post type.
-	 *
-	 * @since 1.0.0
-	 * @param string  $post_type Post type.
-	 * @param integer $limit     Limit how many ids are returned. Default 100.
-	 * @return array Array with post ids.
-	 */
-	public function get_post_ids( $post_type, $limit = 100 ) {
-		global $wpdb;
-
-		if ( ! absint( $limit ) ) {
-			return array();
-		}
-
-		$query = "SELECT p.ID FROM $wpdb->posts AS p WHERE p.post_type IN (%s) LIMIT %d";
-
-		return $wpdb->get_col( $wpdb->prepare( $query, $post_type, absint( $limit ) ) );
 	}
 }
