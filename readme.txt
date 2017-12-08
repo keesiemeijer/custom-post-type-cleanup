@@ -30,8 +30,16 @@ Follow these instructions to install the plugin.
 3. Activate the plugin
 4. Go to wp-admin > Tools > Custom Post Type Cleanup and see if there are unused custom post type posts in the database.
 
+== Changelog ==
+= 1.2.0 =
+* Add ability to re-register unused custom post types.
+
 == Screenshots ==
 
 1. Plugin page
 2. Plugin page after re-registering unused custom post types.
 3. Plugin page after cleaning up all unused post type posts
+
+== Upgrade Notice ==
+= 1.2.0 =
+This upgrade lets you re-register unused custom post types to inspect and delete their posts like you would normally do in the wp-admin
