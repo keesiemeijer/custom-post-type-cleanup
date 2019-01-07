@@ -2,7 +2,7 @@
 
 Version: 1.2.1  
 Requires at least: 4.0  
-Tested up to: 4.9  
+Tested up to: 5.0  
 
 This is the development repository for the WordPress plugin [Custom Post Type Cleanup](https://wordpress.org/plugins/custom-post-type-cleanup/)
 
