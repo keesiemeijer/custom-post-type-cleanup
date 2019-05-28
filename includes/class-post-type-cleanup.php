@@ -88,6 +88,7 @@ class CPTC_Post_Type_Cleanup {
 		$transient      = 'custom_post_type_cleanup_unused_post_types';
 		$total          = 0;
 		$transient_time = 10;
+		$batch_size     = 100;
 
 		$plugin   = _x(
 			'Custom Post Type Cleanup',
@@ -106,17 +107,11 @@ class CPTC_Post_Type_Cleanup {
 
 		$request = cptc_get_request( 'check_referer' );
 
-		/**
-		 * Filter the batch size.
-		 *
-		 * @param int $batch_size Batch size. Default 100.
-		 */
-		$batch_size = apply_filters( 'custom_post_type_cleanup_batch_size', 100, $post_type );
-		$batch_size = absint( $batch_size ) ? absint( $batch_size ) : 100;
-
 		if ( 'delete' === $request ) {
-			$post_type = cptc_get_requested_post_type( 'check_referer' );
-			$notice    = $this->delete_posts( $post_type, $batch_size );
+			$post_type  = cptc_get_requested_post_type( 'check_referer' );
+			$batch_size = cptc_get_batch_size( $post_type, 'check_referer' );
+
+			$notice = $this->delete_posts( $post_type, $batch_size );
 		} elseif ( 'register' === $request ) {
 			if ( ! empty( $this->unused_cpts ) ) {
 				set_transient( $transient, $this->unused_cpts, 60 * $transient_time );
@@ -246,10 +241,9 @@ class CPTC_Post_Type_Cleanup {
 		}
 
 		// Check if there more posts from this post type to delete.
-		$db_post_ids = cptc_get_post_ids( $post_type );
+		$count = absint( cptc_get_posts_count( $post_type ) );
 
-		if ( ! empty( $db_post_ids ) ) {
-			$count = count( $db_post_ids );
+		if ( $count ) {
 
 			/* translators: 1: posts count, 2: post type name  */
 			$notice = _n(
