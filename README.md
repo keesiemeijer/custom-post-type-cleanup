@@ -31,7 +31,7 @@ The settings page if there are no posts from unused post types in the database. 
 
 ### Settings Page
 The settings page if posts where found (after deleting a batch of 100 posts).
-![screenshot-1](https://user-images.githubusercontent.com/1436618/33768773-b198f4ba-dc27-11e7-9586-d65907d8510c.png)
+![screenshot-1](https://user-images.githubusercontent.com/1436618/58555710-724e3780-821a-11e9-9259-ecd51a6a9752.png)
 
 ### Re-registering unused custom post types
 The settings page when unused custom post types are re-registered.
