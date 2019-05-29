@@ -8,6 +8,7 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 
 	protected $cleanup;
 	protected $user_id;
+	protected $batch_size;
 
 	/**
 	 * Set up.
@@ -16,6 +17,11 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 		$this->cleanup = new CPTC_Post_Type_Cleanup();
 		$this->user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		$user          = wp_set_current_user( $this->user_id );
+	}
+
+	function tearDown() {
+		parent::tearDown();
+		$this->remove_filter();
 	}
 
 	/**
@@ -111,8 +117,16 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 	 * @param integer $size Number of posts to delete in one batch.
 	 */
 	function set_batch_size( $size = 5 ) {
-		add_filter( 'custom_post_type_cleanup_batch_size', function( $val ) use ( $size ) {
-			return $size;
-		} );
+		$this->batch_size = $size;
+		add_filter( 'custom_post_type_cleanup_batch_size', array( $this, 'batch_size' ) );
+	}
+
+	function remove_filter() {
+		$this->batch_size = null;
+		remove_filter( 'custom_post_type_cleanup_batch_size', array( $this, 'batch_size' ) );
+	}
+
+	function batch_size( $size ) {
+		return $this->batch_size;
 	}
 }

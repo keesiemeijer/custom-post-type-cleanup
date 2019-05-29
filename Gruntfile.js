@@ -54,6 +54,7 @@ module.exports = function( grunt ) {
 					'!.git/**',
 					'!Gruntfile.js',
 					'!package.json',
+					'!package-lock.json',
 					'!.gitignore',
 					'!.gitmodules',
 					'!.gitattributes',

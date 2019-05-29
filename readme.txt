@@ -1,8 +1,8 @@
 === Custom Post Type Cleanup ===
 Contributors: keesiemeijer
-Requires at least: 4.0
-Tested up to: 5.0
-Stable tag: 1.2.1
+Requires at least: 4.2
+Tested up to: 5.2
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,6 +31,8 @@ Follow these instructions to install the plugin.
 4. Go to wp-admin > Tools > Custom Post Type Cleanup and see if there are unused custom post type posts in the database.
 
 == Changelog ==
+= 1.3.0 =
+* Add batch size option to admin form.
 = 1.2.0 =
 * Add ability to re-register unused custom post types.
 
@@ -41,5 +43,5 @@ Follow these instructions to install the plugin.
 3. Plugin page after cleaning up all unused post type posts
 
 == Upgrade Notice ==
-= 1.2.0 =
-This upgrade lets you re-register unused custom post types to inspect and delete their posts like you would normally do in the wp-admin
+= 1.3.0 =
+This upgrade adds a batch size option to the admin form.

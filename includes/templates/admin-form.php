@@ -37,6 +37,20 @@
 					</p>
 				</td>
 			</tr>
+			<tr>
+				<th scope='row'>
+					<label for="cptc_batch_size">
+						<?php _ex( 'Batch size', 'Form label text for batch size', 'custom-post-type-cleanup' ); ?>:
+					</label>
+				</th>
+				<td>
+					<input type="number" name="cptc_batch_size" id="cptc_batch_size" step="1" min="1" value="<?php echo $batch_size; ?>"/>
+					<p class="description">
+						<?php _e( 'Number of posts to delete.', 'custom-post-type-cleanup' ); ?>
+						<?php _e( 'Default 100.', 'custom-post-type-cleanup' ); ?>
+					</p>
+				</td>
+			</tr>
 		</table>
 		<input id="cptc_delete" class="button button-primary" name="cptc_delete" value="<?php _e('Delete Posts!', 'custom-post-type-cleanup'); ?>" type="submit">
 		<p class="description" style="margin-top: 1em; margin-bottom: 1em;" >
