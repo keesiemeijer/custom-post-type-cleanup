@@ -1,6 +1,6 @@
 # Custom Post Type Cleanup [![Build Status](https://travis-ci.org/keesiemeijer/custom-post-type-cleanup.svg?branch=master)](https://travis-ci.org/keesiemeijer/custom-post-type-cleanup) #
 
-Version: 1.3.0  
+Version: 1.3.2-alpha  
 Requires at least: 4.2  
 Tested up to: 5.2  
 
