@@ -193,20 +193,21 @@ install_db() {
 		fi
 	fi
 
-	if [[ -f "$TMPDIR/my.cnf" ]]; then
-		rm "$TMPDIR/my.cnf" || exit
-	fi
+	# if [[ -f "$TMPDIR/my.cnf" ]]; then
+	# 	rm "$TMPDIR/my.cnf" || exit
+	# fi
 
-	# Suppress password warnings. It silly, I know :-)
-	printf "[client]\npassword=%s\nuser=%s" "$DB_PASS" "$DB_USER" > "$TMPDIR/my.cnf"
+	# # Suppress password warnings. It silly, I know :-)
+	# printf "[client]\npassword=%s\nuser=%s" "$DB_PASS" "$DB_USER" > "$TMPDIR/my.cnf"
 
-	database=$(mysqlshow --defaults-file="$TMPDIR/my.cnf" "$DB_NAME" | grep -v Wildcard | grep -ow "$DB_NAME")
-	if [[ "$DB_NAME" = "$database" ]]; then
-		printf "Database wordpress_test already exists\n"
-	else
-		printf "Creating database wordpress_test\n"
-		mysqladmin --defaults-file="$TMPDIR/my.cnf" create "$DB_NAME" "$EXTRA"
-	fi
+	# database=$(mysqlshow --defaults-file="$TMPDIR/my.cnf" "$DB_NAME" | grep -v Wildcard | grep -ow "$DB_NAME")
+	# if [[ "$DB_NAME" = "$database" ]]; then
+	# 	printf "Database wordpress_test already exists\n"
+	# else
+	# 	printf "Creating database wordpress_test\n"
+	# 	mysqladmin --defaults-file="$TMPDIR/my.cnf" create "$DB_NAME" "$EXTRA"
+	# fi
+	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS" "$EXTRA"
 }
 
 install_wp
