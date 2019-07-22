@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Custom Post Type Cleanup
-Version: 1.3.1
+Version: 1.3.2-alpha
 Plugin URI:
 Description: Detect and delete posts from custom post types that are no longer in use.
 Author: keesiemeijer
