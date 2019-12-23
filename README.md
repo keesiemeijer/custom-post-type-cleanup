@@ -1,8 +1,8 @@
 # Custom Post Type Cleanup [![Build Status](https://travis-ci.org/keesiemeijer/custom-post-type-cleanup.svg?branch=master)](https://travis-ci.org/keesiemeijer/custom-post-type-cleanup) #
 
 Version: 1.3.1  
-Requires at least: 4.2  
-Tested up to: 5.2  
+Requires at least: 4.3  
+Tested up to: 5.3  
 
 This is the development repository for the WordPress plugin [Custom Post Type Cleanup](https://wordpress.org/plugins/custom-post-type-cleanup/)
 
