@@ -15,7 +15,7 @@ module.exports = function( grunt ) {
 			},
 			target: {
 				files: {
-					src: [ '*.php', '**/*.php', '!node_modules/**', '!bin/**' ]
+					src: [ '*.php', '**/*.php', '!node_modules/**', '!bin/**', '!vendor/**' ]
 				}
 			}
 		},
@@ -55,6 +55,8 @@ module.exports = function( grunt ) {
 					'!Gruntfile.js',
 					'!package.json',
 					'!package-lock.json',
+					'!composer.json',
+					'!composer.lock',
 					'!.gitignore',
 					'!.gitmodules',
 					'!.gitattributes',

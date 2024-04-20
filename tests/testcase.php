@@ -4,7 +4,7 @@
  *
  * @package Custom Post Type Cleanup
  */
-class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
+class CPTC_Post_Type_Cleanup_UnitTestCase extends WP_UnitTestCase {
 
 	protected $cleanup;
 	protected $user_id;
@@ -13,14 +13,15 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 	/**
 	 * Set up.
 	 */
-	function setUp() {
+	function set_up() {
+		parent::set_up();
 		$this->cleanup = new CPTC_Post_Type_Cleanup();
 		$this->user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		$user          = wp_set_current_user( $this->user_id );
 	}
 
-	function tearDown() {
-		parent::tearDown();
+	function tear_down() {
+		parent::tear_down();
 		$this->remove_filter();
 	}
 
@@ -33,7 +34,6 @@ class CPTC_Post_Type_Cleanup_UnitTestCase extends \WP_UnitTestCase {
 	 * @return array                  Array with posts.
 	 */
 	function create_posts( $post_type = 'cpt', $posts_per_page = 5, $delete = true ) {
-
 		if ( $delete ) {
 			_delete_all_posts();
 		}
