@@ -1,7 +1,7 @@
 # Custom Post Type Cleanup [![Tests](https://github.com/keesiemeijer/custom-post-type-cleanup/workflows/Test/badge.svg)](https://github.com/keesiemeijer/custom-post-type-cleanup/actions)
  #
 
-Version: 1.3.1  
+Version: 1.3.2  
 Requires at least: 5.9  
 Tested up to: 6.5  
 
