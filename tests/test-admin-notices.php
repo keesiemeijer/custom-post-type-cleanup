@@ -9,11 +9,11 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 	/**
 	 * Set up.
 	 */
-	function setUp() {
-		parent::setUp();
+	function set_up() {
+		parent::set_up();
 		$this->set_batch_size( 5 );
 		_delete_all_posts();
-		add_filter( 'wp_die_handler', array( $this, 'get_wp_die_handler' ) );
+		add_filter( 'wp_die_handler', array( $this, 'get_wp_die_handler' ), 10 , 3 );
 	}
 
 	/**
@@ -96,10 +96,10 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 
 		if ( is_array( $notices ) ) {
 			foreach ( $notices as $notice ) {
-				$this->assertContains( $notice, $admin_page );
+				$this->assertStringContainsString( $notice, $admin_page );
 			}
 		} else {
-			$this->assertContains( $notices, $admin_page );
+			$this->assertStringContainsString( $notices, $admin_page );
 		}
 	}
 
@@ -110,7 +110,7 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 		$this->mock_admin_page_globals( 'invalid_post_type' );
 		$this->cleanup->register_post_type();
 		$admin_page = $this->get_admin_page();
-		$this->assertContains( 'Error: invalid post type', $admin_page );
+		$this->assertStringContainsString( 'Error: invalid post type', $admin_page );
 	}
 
 	/**
@@ -128,7 +128,7 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 		$this->cleanup->admin_menu();
 		$admin_page = ob_get_clean();
 
-		$this->assertContains( "You don't have sufficient permissions to access this page", $admin_page );
+		$this->assertStringContainsString( "You don't have sufficient permissions to access this page", $admin_page );
 
 		$role->add_cap( 'delete_posts' );
 		wp_set_current_user( $current_user );
@@ -140,15 +140,15 @@ class CPTC_Test_Admin_Notices extends CPTC_Post_Type_Cleanup_UnitTestCase {
 	function test_admin_page_without_submitting_form_and_no_unused_post_types() {
 		$_SERVER['REQUEST_METHOD'] = '';
 		$admin_page = $this->get_admin_page();
-		$this->assertNotContains( 'Error:', $admin_page );
-		$this->assertNotContains( 'Notice:', $admin_page );
+		$this->assertStringNotContainsString( 'Error:', $admin_page );
+		$this->assertStringNotContainsString( 'Notice:', $admin_page );
 	}
 
-	function get_wp_die_handler( $handler ) {
+	function get_wp_die_handler( $handler, $title = '', $args = array() ) {
 
 		return array( $this, 'wp_die_handler' );
 	}
-	function wp_die_handler( $message ) {
+	function wp_die_handler( $message, $title = '', $args = array() ) {
 		echo $message;
 	}
 }
