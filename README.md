@@ -1,4 +1,5 @@
-# Custom Post Type Cleanup [![Build Status](https://travis-ci.org/keesiemeijer/custom-post-type-cleanup.svg?branch=master)](https://travis-ci.org/keesiemeijer/custom-post-type-cleanup) #
+# Custom Post Type Cleanup [![Tests](https://github.com/keesiemeijer/custom-post-type-cleanup/workflows/Test/badge.svg)](https://github.com/keesiemeijer/custom-post-type-cleanup/actions)
+ #
 
 Version: 1.3.2-alpha  
 Requires at least: 4.3  
