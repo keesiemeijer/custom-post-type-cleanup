@@ -31,7 +31,7 @@ Follow these instructions to install the plugin.
 4. Go to wp-admin > Tools > Custom Post Type Cleanup and see if there are unused custom post type posts in the database.
 
 == Changelog ==
-= 1.3.1 =
+= 1.3.2 =
 * Tested plugin to WP 6.5 on newer PHP versions.
 = 1.3.0 =
 * Add batch size option to admin form.
@@ -45,5 +45,5 @@ Follow these instructions to install the plugin.
 3. Plugin page after cleaning up all unused post type posts
 
 == Upgrade Notice ==
-= 1.3.1 =
+= 1.3.2 =
 Tested plugin to WP 6.5 on newer PHP versions
