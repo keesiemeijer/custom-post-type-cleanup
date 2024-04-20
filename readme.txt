@@ -2,7 +2,7 @@
 Contributors: keesiemeijer
 Requires at least: 5.9
 Tested up to: 6.5
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
